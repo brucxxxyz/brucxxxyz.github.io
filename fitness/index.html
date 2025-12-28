@@ -1,6 +1,215 @@
-<div style="margin-bottom:16px;font-size:15px;">
-  <a href="https://brucxxxyz.github.io/">🏠 首页</a> ·
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>💪 今日健身推荐</title>
+
+<style>
+body{
+    font-family:-apple-system,BlinkMacSystemFont,"PingFang SC",Arial;
+    background:#f7f7f7;
+    margin:0;
+    padding:16px;
+    color:#222;
+}
+h1{font-size:26px;margin-bottom:6px;}
+.subtitle{color:#666;margin-bottom:16px;}
+label{display:block;margin:8px 0 4px;}
+input,button{
+    width:100%;
+    padding:12px;
+    font-size:17px;
+    border-radius:10px;
+    border:1px solid #ccc;
+}
+button{
+    background:#007aff;
+    color:#fff;
+    border:none;
+    margin-top:10px;
+}
+button.secondary{background:#e5e5ea;color:#000;}
+button.danger{background:#ff3b30;}
+.card{
+    background:#fff;
+    border-radius:14px;
+    padding:16px;
+    margin:14px 0;
+    box-shadow:0 2px 8px rgba(0,0,0,.05);
+}
+.item{margin:6px 0;font-size:16px;}
+.nav{
+    margin-bottom:16px;
+    font-size:15px;
+}
+.nav a{text-decoration:none;color:#007aff;}
+.footer{
+    margin-top:40px;
+    text-align:center;
+    font-size:14px;
+    color:#999;
+    padding-bottom:20px;
+}
+.badge{
+    display:inline-block;
+    padding:4px 10px;
+    border-radius:12px;
+    font-size:13px;
+    margin-left:6px;
+    background:#e5e5ea;
+}
+</style>
+</head>
+
+<body>
+
+<div class="nav">
+  <a href="/">🏠 首页</a> ·
   <a href="/breakfast/">🍳 早餐</a> ·
-  <a href="/play/">🐠 游玩</a> ·
+  <a href="/play/">🗺 游玩</a> ·
   <a href="/fitness/">💪 健身</a>
 </div>
+
+<h1>💪 今日健身推荐</h1>
+<div class="subtitle">低强度 · 不纠结 · 在家就练</div>
+
+<label>👤 大名</label>
+<input id="name" placeholder="请输入你的名字">
+
+<label>📅 选择日期</label>
+<input id="date" type="date">
+
+<button onclick="generate()">🔥 开始健身</button>
+
+<div id="options"></div>
+<div id="final"></div>
+<div id="historyBox"></div>
+
+<button class="secondary" onclick="showHistory()">📜 查看历史</button>
+<button class="danger" onclick="clearHistory()">🧹 清除历史</button>
+
+<script>
+/* ========= 动作数据 ========= */
+const exercises = [
+    {name:"站姿提膝收腹", level:"低", kcal:60, time:10},
+    {name:"原地摆臂快走", level:"低", kcal:70, time:10},
+    {name:"站姿侧抬腿", level:"低", kcal:50, time:10},
+
+    {name:"徒手深蹲", level:"中", kcal:90, time:12},
+    {name:"站姿拳击（技术+呼吸）", level:"中", kcal:100, time:12},
+    {name:"站姿转体", level:"中", kcal:80, time:10},
+
+    {name:"波比简化版（不跳）", level:"偏高", kcal:120, time:12},
+    {name:"原地高抬腿（慢速）", level:"偏高", kcal:130, time:12}
+];
+
+function rand(arr){return arr[Math.floor(Math.random()*arr.length)];}
+
+/* ========= 生成方案 ========= */
+function makePlan(){
+    const plan=[];
+    let kcal=0;
+    for(let i=0;i<3;i++){
+        const e=rand(exercises);
+        plan.push(e);
+        kcal+=e.kcal;
+    }
+    return {plan,kcal};
+}
+
+/* ========= 逻辑 ========= */
+function generate(){
+    const name=document.getElementById("name").value.trim();
+    if(!name){alert("请先输入大名");return;}
+
+    document.getElementById("options").innerHTML="⏳ 正在生成训练计划...";
+    document.getElementById("final").innerHTML="";
+    document.getElementById("historyBox").innerHTML="";
+
+    setTimeout(()=>{
+        const box=document.getElementById("options");
+        box.innerHTML="";
+        for(let i=0;i<3;i++){
+            const p=makePlan();
+            const div=document.createElement("div");
+            div.className="card";
+            div.innerHTML=`
+                <strong>方案 ${i+1}</strong>
+                ${p.plan.map(x=>`
+                    <div class="item">
+                        🏋️ ${x.name}
+                        <span class="badge">强度 ${x.level}</span>
+                        <span class="badge">${x.kcal} kcal</span>
+                    </div>
+                `).join("")}
+                <div class="item">🔥 预计消耗 ${p.kcal} kcal</div>
+                <button onclick='choose(${JSON.stringify(p)}, "${name}")'>选择这个</button>
+            `;
+            box.appendChild(div);
+        }
+    },1000);
+}
+
+function choose(p,name){
+    const h=JSON.parse(localStorage.getItem("fitnessHistory")||"[]");
+    h.push({date:new Date().toLocaleDateString(),name,plan:p});
+    localStorage.setItem("fitnessHistory",JSON.stringify(h));
+
+    document.getElementById("options").innerHTML="";
+    document.getElementById("final").innerHTML=`
+        <div class="card">
+            <strong>✅ 今日健身</strong>
+            ${p.plan.map(x=>`
+                <div class="item">
+                    🏋️ ${x.name}
+                    <span class="badge">强度 ${x.level}</span>
+                    <span class="badge">${x.kcal} kcal</span>
+                </div>
+            `).join("")}
+            <div class="item">🔥 总消耗 ${p.kcal} kcal</div>
+        </div>
+    `;
+}
+
+function showHistory(){
+    const box=document.getElementById("historyBox");
+    const h=JSON.parse(localStorage.getItem("fitnessHistory")||"[]");
+    box.innerHTML="";
+    if(!h.length){
+        box.innerHTML='<div class="card">暂无历史记录</div>';
+        return;
+    }
+    h.forEach(x=>{
+        box.innerHTML+=`
+            <div class="card">
+                <strong>${x.date} · ${x.name}</strong>
+                ${x.plan.plan.map(p=>`
+                    <div class="item">
+                        🏋️ ${p.name}
+                        <span class="badge">强度 ${p.level}</span>
+                        <span class="badge">${p.kcal} kcal</span>
+                    </div>
+                `).join("")}
+                <div class="item">🔥 ${x.plan.kcal} kcal</div>
+            </div>
+        `;
+    });
+}
+
+function clearHistory(){
+    if(confirm("确定清除所有健身历史？")){
+        localStorage.removeItem("fitnessHistory");
+        document.getElementById("historyBox").innerHTML="";
+    }
+}
+
+document.getElementById("date").value=new Date().toISOString().slice(0,10);
+</script>
+
+<footer class="footer">
+   — Designed by BY —
+</footer>
+
+</body>
+</html>
