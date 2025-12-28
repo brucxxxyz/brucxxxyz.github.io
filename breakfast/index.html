@@ -1,6 +1,180 @@
-<div style="margin-bottom:16px;font-size:15px;">
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🍳 今日早餐推荐</title>
+
+<style>
+body{
+    font-family:-apple-system,BlinkMacSystemFont,"PingFang SC",Arial;
+    background:#f7f7f7;
+    margin:0;
+    padding:16px;
+    color:#222;
+}
+h1{font-size:26px;margin-bottom:6px;}
+.subtitle{color:#666;margin-bottom:16px;}
+
+.nav{
+    margin-bottom:16px;
+    font-size:15px;
+}
+.nav a{
+    color:#007aff;
+    text-decoration:none;
+    margin-right:6px;
+}
+
+label{display:block;margin:10px 0 4px;}
+input,button{
+    width:100%;
+    padding:12px;
+    font-size:17px;
+    border-radius:10px;
+    border:1px solid #ccc;
+    background:#fff;
+}
+
+button{
+    background:#007aff;
+    color:#fff;
+    border:none;
+    margin-top:12px;
+}
+button.secondary{
+    background:#e5e5ea;
+    color:#000;
+}
+button.danger{
+    background:#ff3b30;
+}
+
+.card{
+    background:#fff;
+    border-radius:14px;
+    padding:16px;
+    margin:14px 0;
+    box-shadow:0 2px 8px rgba(0,0,0,.05);
+}
+.item{margin:6px 0;font-size:16px;}
+
+.footer{
+    text-align:center;
+    color:#999;
+    font-size:14px;
+    margin-top:30px;
+}
+</style>
+</head>
+
+<body>
+
+<!-- 🔝 导航 -->
+<div class="nav">
   <a href="https://brucxxxyz.github.io/">🏠 首页</a> ·
   <a href="/breakfast/">🍳 早餐</a> ·
-  <a href="/play/">🐠 游玩</a> ·
+  <a href="/play/">🗺 游玩</a> ·
   <a href="/fitness/">💪 健身</a>
 </div>
+
+<h1>🍳 今日早餐推荐</h1>
+<div class="subtitle">不纠结 · 直接吃</div>
+
+<label>👤 大名</label>
+<input id="name" placeholder="请输入你的名字">
+
+<label>📅 日期</label>
+<input id="date" type="date">
+
+<button onclick="generate()">🎯 推荐早餐</button>
+
+<div id="result"></div>
+<div id="historyBox"></div>
+
+<button class="secondary" onclick="showHistory()">📜 查看历史</button>
+<button class="danger" onclick="clearHistory()">🧹 清除历史</button>
+
+<div class="footer">— Design by BY —</div>
+
+<script>
+/* ========= 早餐库 ========= */
+const breakfasts = [
+    "🍞 吐司 + 黄油",
+    "🥣 燕麦 + 牛奶",
+    "🍳 煎蛋 + 牛油果",
+    "🥐 可颂 + 咖啡",
+    "🍚 白粥 + 咸菜",
+    "🥟 饺子",
+    "🍜 清汤面",
+    "🥪 三明治",
+    "🧀 奶酪 + 水果",
+    "🥞 松饼"
+];
+
+/* ========= 逻辑 ========= */
+function generate(){
+    const name=document.getElementById("name").value.trim();
+    if(!name){alert("请先输入大名");return;}
+
+    const food=breakfasts[Math.floor(Math.random()*breakfasts.length)];
+    const date=document.getElementById("date").value;
+
+    const record={date,name,food};
+
+    const h=JSON.parse(localStorage.getItem("breakfastHistory")||"[]");
+    h.push(record);
+    localStorage.setItem("breakfastHistory",JSON.stringify(h));
+
+    document.getElementById("result").innerHTML=`
+        <div class="card">
+            <strong>✅ 今日早餐</strong>
+            <div class="item">👤 ${name}</div>
+            <div class="item">📅 ${date}</div>
+            <div class="item">🍳 ${food}</div>
+        </div>
+    `;
+}
+
+/* ========= 历史 ========= */
+function showHistory(){
+    const box=document.getElementById("historyBox");
+    const h=JSON.parse(localStorage.getItem("breakfastHistory")||"[]");
+    box.innerHTML="";
+    if(!h.length){
+        box.innerHTML='<div class="card">暂无历史记录</div>';
+        return;
+    }
+    h.forEach(x=>{
+        box.innerHTML+=`
+            <div class="card">
+                <strong>${x.date} · ${x.name}</strong>
+                <div class="item">🍳 ${x.food}</div>
+            </div>
+        `;
+    });
+}
+
+function clearHistory(){
+    if(confirm("确定清除所有早餐历史？")){
+        localStorage.removeItem("breakfastHistory");
+        document.getElementById("historyBox").innerHTML="";
+    }
+}
+
+/* 默认今天 */
+document.getElementById("date").value=new Date().toISOString().slice(0,10);
+</script>
+
+<footer style="
+    margin-top:40px;
+    text-align:center;
+    font-size:14px;
+    color:#999;
+    padding-bottom:20px;
+">
+    Designed by BY
+</footer>
+
+</body>
+</html>
