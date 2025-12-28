@@ -15,18 +15,7 @@ body{
 }
 h1{font-size:26px;margin-bottom:6px;}
 .subtitle{color:#666;margin-bottom:16px;}
-
-.nav{
-    margin-bottom:16px;
-    font-size:15px;
-}
-.nav a{
-    color:#007aff;
-    text-decoration:none;
-    margin-right:6px;
-}
-
-label{display:block;margin:10px 0 4px;}
+label{display:block;margin:8px 0 4px;}
 input,button{
     width:100%;
     padding:12px;
@@ -35,21 +24,14 @@ input,button{
     border:1px solid #ccc;
     background:#fff;
 }
-
 button{
     background:#007aff;
     color:#fff;
     border:none;
-    margin-top:12px;
+    margin-top:10px;
 }
-button.secondary{
-    background:#e5e5ea;
-    color:#000;
-}
-button.danger{
-    background:#ff3b30;
-}
-
+button.secondary{background:#e5e5ea;color:#000;}
+button.danger{background:#ff3b30;}
 .card{
     background:#fff;
     border-radius:14px;
@@ -58,83 +40,149 @@ button.danger{
     box-shadow:0 2px 8px rgba(0,0,0,.05);
 }
 .item{margin:6px 0;font-size:16px;}
-
+.nutrition{font-size:14px;color:#555;margin-top:6px;}
+.nav{
+    margin-bottom:16px;
+    font-size:15px;
+}
+.nav a{text-decoration:none;color:#007aff;}
 .footer{
+    margin-top:40px;
     text-align:center;
-    color:#999;
     font-size:14px;
-    margin-top:30px;
+    color:#999;
+    padding-bottom:20px;
 }
 </style>
 </head>
 
 <body>
 
-<!-- 🔝 导航 -->
 <div class="nav">
-  <a href="https://brucxxxyz.github.io/">🏠 首页</a> ·
+  <a href="/">🏠 首页</a> ·
   <a href="/breakfast/">🍳 早餐</a> ·
   <a href="/play/">🗺 游玩</a> ·
   <a href="/fitness/">💪 健身</a>
 </div>
 
 <h1>🍳 今日早餐推荐</h1>
-<div class="subtitle">不纠结 · 直接吃</div>
+<div class="subtitle">简单 · 清晰 · 不纠结</div>
 
 <label>👤 大名</label>
 <input id="name" placeholder="请输入你的名字">
 
-<label>📅 日期</label>
+<label>📅 选择日期</label>
 <input id="date" type="date">
 
-<button onclick="generate()">🎯 推荐早餐</button>
+<button onclick="generate()">🍳 推荐早餐</button>
 
-<div id="result"></div>
+<div id="options"></div>
+<div id="final"></div>
 <div id="historyBox"></div>
 
 <button class="secondary" onclick="showHistory()">📜 查看历史</button>
 <button class="danger" onclick="clearHistory()">🧹 清除历史</button>
 
 <script>
-/* ========= 早餐库 ========= */
-const breakfasts = [
-    "🍞 吐司 + 黄油",
-    "🥣 燕麦 + 牛奶",
-    "🍳 煎蛋 + 牛油果",
-    "🥐 可颂 + 咖啡",
-    "🍚 白粥 + 咸菜",
-    "🥟 饺子",
-    "🍜 清汤面",
-    "🥪 三明治",
-    "🧀 奶酪 + 水果",
-    "🥞 松饼"
+/* ========= 早餐数据（含营养） ========= */
+const drinks=[
+ {name:"豆浆",k:80,p:7,c:8,f:3},
+ {name:"温牛奶",k:120,p:8,c:12,f:5},
+ {name:"燕麦奶",k:110,p:3,c:16,f:4},
+ {name:"黑咖啡",k:10,p:1,c:1,f:0},
+ {name:"绿茶",k:0,p:0,c:0,f:0},
+ {name:"温水",k:0,p:0,c:0,f:0}
 ];
+const staples=[
+ {name:"全麦吐司",k:160,p:6,c:28,f:2},
+ {name:"小馒头",k:180,p:5,c:35,f:1},
+ {name:"即食燕麦",k:150,p:5,c:27,f:3},
+ {name:"白粥 / 小米粥",k:120,p:3,c:26,f:0},
+ {name:"鸡蛋（煮/蒸）",k:90,p:7,c:1,f:6},
+ {name:"鸡蛋三明治",k:250,p:12,c:30,f:8}
+];
+const desserts=[
+ {name:"水果",k:80,p:1,c:20,f:0},
+ {name:"原味酸奶",k:120,p:6,c:12,f:4},
+ {name:"坚果一小把",k:100,p:3,c:4,f:8},
+ {name:"红豆 / 绿豆",k:110,p:4,c:22,f:1},
+ {name:"玉米 / 红薯",k:130,p:2,c:30,f:0},
+ {name:"不吃甜点",k:0,p:0,c:0,f:0}
+];
+
+function rand(arr){return arr[Math.floor(Math.random()*arr.length)];}
+
+function makeMeal(){
+    const d=rand(drinks);
+    const s=rand(staples);
+    const de=rand(desserts);
+    return{
+        d,s,de,
+        total:{
+            kcal:d.k+s.k+de.k,
+            p:d.p+s.p+de.p,
+            c:d.c+s.c+de.c,
+            f:d.f+s.f+de.f
+        }
+    };
+}
 
 /* ========= 逻辑 ========= */
 function generate(){
     const name=document.getElementById("name").value.trim();
     if(!name){alert("请先输入大名");return;}
 
-    const food=breakfasts[Math.floor(Math.random()*breakfasts.length)];
-    const date=document.getElementById("date").value;
+    document.getElementById("options").innerHTML="⏳ 正在准备早餐...";
+    document.getElementById("final").innerHTML="";
+    document.getElementById("historyBox").innerHTML="";
 
-    const record={date,name,food};
+    setTimeout(()=>{
+        const box=document.getElementById("options");
+        box.innerHTML="";
+        for(let i=0;i<3;i++){
+            const m=makeMeal();
+            const div=document.createElement("div");
+            div.className="card";
+            div.innerHTML=`
+                <strong>选项 ${i+1}</strong>
+                <div class="item">🥤 ${m.d.name}</div>
+                <div class="item">🍞 ${m.s.name}</div>
+                <div class="item">🍮 ${m.de.name}</div>
+                <div class="nutrition">
+                    🔥 ${m.total.kcal} kcal ·
+                    🥚 ${m.total.p}g ·
+                    🍞 ${m.total.c}g ·
+                    🧈 ${m.total.f}g
+                </div>
+                <button onclick='choose(${JSON.stringify(m)}, "${name}")'>选择这个</button>
+            `;
+            box.appendChild(div);
+        }
+    },800);
+}
 
+function choose(m,name){
     const h=JSON.parse(localStorage.getItem("breakfastHistory")||"[]");
-    h.push(record);
+    h.push({date:new Date().toLocaleDateString(),name,meal:m});
     localStorage.setItem("breakfastHistory",JSON.stringify(h));
 
-    document.getElementById("result").innerHTML=`
+    document.getElementById("options").innerHTML="";
+    document.getElementById("final").innerHTML=`
         <div class="card">
             <strong>✅ 今日早餐</strong>
-            <div class="item">👤 ${name}</div>
-            <div class="item">📅 ${date}</div>
-            <div class="item">🍳 ${food}</div>
+            <div class="item">🥤 ${m.d.name}</div>
+            <div class="item">🍞 ${m.s.name}</div>
+            <div class="item">🍮 ${m.de.name}</div>
+            <div class="nutrition">
+                🔥 ${m.total.kcal} kcal ·
+                🥚 ${m.total.p}g ·
+                🍞 ${m.total.c}g ·
+                🧈 ${m.total.f}g
+            </div>
         </div>
     `;
 }
 
-/* ========= 历史 ========= */
 function showHistory(){
     const box=document.getElementById("historyBox");
     const h=JSON.parse(localStorage.getItem("breakfastHistory")||"[]");
@@ -147,7 +195,10 @@ function showHistory(){
         box.innerHTML+=`
             <div class="card">
                 <strong>${x.date} · ${x.name}</strong>
-                <div class="item">🍳 ${x.food}</div>
+                <div class="item">🥤 ${x.meal.d.name}</div>
+                <div class="item">🍞 ${x.meal.s.name}</div>
+                <div class="item">🍮 ${x.meal.de.name}</div>
+                <div class="nutrition">🔥 ${x.meal.total.kcal} kcal</div>
             </div>
         `;
     });
@@ -160,7 +211,6 @@ function clearHistory(){
     }
 }
 
-/* 默认今天 */
 document.getElementById("date").value=new Date().toISOString().slice(0,10);
 </script>
 
