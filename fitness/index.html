@@ -1,257 +1,99 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>💪 今日健身推荐</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <title>Fitness</title>
 
-<link rel="stylesheet" href="/common/common.css">
-<script src="/common/common.js"></script>
+  <!-- 全站统一样式 -->
+  <link rel="stylesheet" href="../common/common.css">
 
+  <style>
+    .subtitle {
+      font-size: 16px;
+      color: #666;
+      margin-bottom: 16px;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      font-size: 18px;
+      margin-bottom: 12px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      background: #fff;
+    }
+
+    .bar {
+      height: 52px;
+      border-radius: 14px;
+      margin: 14px 0;
+      cursor: pointer;
+      transition: opacity .2s;
+    }
+    .bar:active { opacity: 0.6; }
+
+    .blue { background: #007aff; }
+    .gray { background: #c7c7cc; }
+    .red  { background: #ff3b30; }
+
+    .card {
+      background: #fff;
+      border-radius: 14px;
+      padding: 16px;
+      margin-bottom: 14px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+
+    .item { margin: 6px 0; font-size: 16px; }
+    .badge { margin-left: 6px; background:#eee; padding:2px 6px; border-radius:6px; font-size:12px; }
+  </style>
 </head>
+
 <body>
 
-<!-- 顶部按钮 -->
-<div class="top-bar">
-  <div class="icon-btn" id="langBtn">🌐</div>
+  <!-- ❗ 不写 top-bar / nav / footer，它们由 common.js 自动注入 -->
 
-  <div id="langMenu">
-    <div class="lang-title">🌐 Language</div>
-    <div class="lang-item" data-lang="zh-CN">🇨🇳 简体中文</div>
-    <div class="lang-item" data-lang="zh-HK">🇭🇰 粤语繁體</div>
-    <div class="lang-item" data-lang="en">🇺🇸 English</div>
+  <div class="page">
+
+    <h1 id="t_title_fitness"></h1>
+    <div class="subtitle" id="t_subtitle_fitness"></div>
+
+    <label id="t_name_label"></label>
+    <input id="nameInput" placeholder="" />
+
+    <label id="t_date_label"></label>
+    <input id="dateInput" type="date" />
+
+    <div class="bar blue" id="barBlue"></div>
+    <div class="bar gray" id="barGray"></div>
+    <div class="bar red" id="barRed"></div>
+
+    <div id="options"></div>
+    <div id="final"></div>
+    <div id="historyBox"></div>
+
   </div>
 
-  <div class="icon-btn" id="themeBtn">🌙</div>
-</div>
+  <!-- 全站统一语言包 + 公共逻辑 -->
+  <script src="../common/lang.js"></script>
+  <script src="../common/common.js"></script>
+  <script src="../common/page-common.js"></script>
 
-<!-- 导航栏 -->
-<div class="nav">
-  <a href="/">🏠 首页</a> ·
-  <a href="/breakfast/">🍳 早餐</a> ·
-  <a href="/play/">🗺 游玩</a> ·
-  <a href="/fitness/">💪 健身</a>
-</div>
+  <!-- 健身逻辑 -->
+  <script src="fitness.js"></script>
 
-<h1 id="t_title_fitness"></h1>
-<div class="subtitle" id="t_subtitle_fitness"></div>
+  <script>
+    console.log("Fitness page loaded");
 
-<label id="t_name_label"></label>
-<input id="name">
+    initPageCommon();   // 注入 top-bar/nav/footer + 初始化语言/主题
 
-<label id="t_date_label"></label>
-<input id="date" type="date">
-
-<button onclick="generate()" id="t_btn_generate_fitness"></button>
-
-<div id="options"></div>
-<div id="final"></div>
-<div id="historyBox"></div>
-
-<button class="secondary" onclick="showHistory()" id="t_btn_history"></button>
-<button class="danger" onclick="clearHistory()" id="t_btn_clear"></button>
-
-<footer class="footer" id="t_footer"></footer>
-
-<script>
-/* ============================================================
-   健身业务逻辑（语言与深色模式由 common.js 负责）
-   ============================================================ */
-
-/* 6 大类 × 每类 6 动作 */
-const categories = {
-  warmup: [
-    {name:"站姿提膝收腹", level:1, kcal:60},
-    {name:"原地摆臂快走", level:1, kcal:70},
-    {name:"肩部绕环", level:1, kcal:40},
-    {name:"颈部活动", level:1, kcal:20},
-    {name:"开合步热身", level:1, kcal:55},
-    {name:"手臂画圈", level:1, kcal:45}
-  ],
-  legs: [
-    {name:"徒手深蹲", level:2, kcal:90},
-    {name:"站姿侧抬腿", level:1, kcal:50},
-    {name:"弓步蹲", level:2, kcal:85},
-    {name:"靠墙静蹲", level:2, kcal:80},
-    {name:"后踢腿", level:1, kcal:60},
-    {name:"提踵训练", level:1, kcal:45}
-  ],
-  core: [
-    {name:"站姿转体", level:2, kcal:80},
-    {name:"站姿收腹", level:1, kcal:50},
-    {name:"侧腹收缩", level:2, kcal:70},
-    {name:"站姿卷腹", level:2, kcal:75},
-    {name:"核心稳定站姿", level:1, kcal:40},
-    {name:"站姿侧弯", level:1, kcal:45}
-  ],
-  upper: [
-    {name:"站姿拳击（技术+呼吸）", level:2, kcal:100},
-    {name:"俯身划船（徒手）", level:2, kcal:85},
-    {name:"墙壁俯卧撑", level:2, kcal:90},
-    {name:"手臂后伸", level:1, kcal:50},
-    {name:"肩推（徒手）", level:2, kcal:80},
-    {name:"手臂交叉拉伸", level:1, kcal:30}
-  ],
-  cardio: [
-    {name:"原地高抬腿（慢速）", level:3, kcal:130},
-    {name:"原地踏步", level:1, kcal:60},
-    {name:"开合跳（低冲击）", level:2, kcal:110},
-    {name:"左右小跳", level:2, kcal:95},
-    {name:"轻量跑步原地", level:2, kcal:100},
-    {name:"快速摆臂走", level:2, kcal:90}
-  ],
-  boxing: [
-    {name:"波比简化版（不跳）", level:3, kcal:120},
-    {name:"轻量拳击组合（直拳+摆拳）", level:2, kcal:110},
-    {name:"直拳练习", level:2, kcal:90},
-    {name:"摆拳练习", level:2, kcal:95},
-    {name:"闪躲步伐", level:2, kcal:85},
-    {name:"拳击步伐移动", level:2, kcal:100}
-  ]
-};
-
-function rand(arr){return arr[Math.floor(Math.random()*arr.length)];}
-
-/* 生成 1 组 × 3 动作 */
-function makePlan(){
-  const keys = Object.keys(categories);
-  const group = [];
-  let totalKcal = 0;
-  let levels = [];
-
-  for(let i=0; i<3; i++){
-    const cat = rand(keys);
-    const action = rand(categories[cat]);
-    group.push(action);
-    totalKcal += action.kcal;
-    levels.push(action.level);
-  }
-
-  const maxLevel = Math.max(...levels);
-  const minLevel = Math.min(...levels);
-  const diff = maxLevel - minLevel;
-
-  return { group, totalKcal, diff };
-}
-
-/* 生成按钮（3 组选项 × 每组选 3 动作） */
-function generate(){
-  const name=document.getElementById("name").value.trim();
-  if(!name){
-    alert(LANG[currentLang].name_placeholder);
-    return;
-  }
-
-  document.getElementById("options").innerHTML="⏳ ...";
-  document.getElementById("final").innerHTML="";
-  document.getElementById("historyBox").innerHTML="";
-
-  setTimeout(()=>{
-    const box=document.getElementById("options");
-    box.innerHTML="";
-    const t = LANG[currentLang];
-
-    for(let i=0;i<3;i++){
-      const p=makePlan();
-
-      const div=document.createElement("div");
-      div.className="card";
-
-      div.innerHTML = `
-        <strong>${t.option} ${i+1}</strong>
-
-        ${p.group.map(x=>`
-          <div class="item">
-            🏋️ ${translateExercise(x.name)}
-            <span class="badge">${x.level}</span>
-            <span class="badge">${x.kcal} kcal</span>
-          </div>
-        `).join("")}
-
-        <div class="item">🔥 ${p.totalKcal} kcal</div>
-        <div class="item">📊 强度差：${p.diff}</div>
-
-        <button onclick='choose(${JSON.stringify(p)}, "${name}")'>
-          ${t.choose}
-        </button>
-      `;
-
-      box.appendChild(div);
-    }
-  },600);
-}
-
-/* 选择方案 */
-function choose(p,name){
-  const h=JSON.parse(localStorage.getItem("fitnessHistory")||"[]");
-  h.push({date:new Date().toLocaleDateString(),name,plan:p});
-  localStorage.setItem("fitnessHistory",JSON.stringify(h));
-
-  const t = LANG[currentLang];
-
-  document.getElementById("options").innerHTML="";
-  document.getElementById("final").innerHTML=`
-    <div class="card">
-      <strong>${t.today_fitness}</strong>
-
-      ${p.group.map(x=>`
-        <div class="item">
-          🏋️ ${translateExercise(x.name)}
-          <span class="badge">${x.level}</span>
-          <span class="badge">${x.kcal} kcal</span>
-        </div>
-      `).join("")}
-
-      <div class="item">🔥 ${p.totalKcal} kcal</div>
-      <div class="item">📊 强度差：${p.diff}</div>
-    </div>
-  `;
-}
-
-/* 历史记录 */
-function showHistory(){
-  const box=document.getElementById("historyBox");
-  const h=JSON.parse(localStorage.getItem("fitnessHistory")||"[]");
-  const t = LANG[currentLang];
-
-  box.innerHTML="";
-
-  if(!h.length){
-    box.innerHTML=`<div class="card">${t.history_empty}</div>`;
-    return;
-  }
-
-  h.forEach(x=>{
-    box.innerHTML+=`
-      <div class="card">
-        <strong>${x.date} · ${x.name}</strong>
-
-        ${x.plan.group.map(p=>`
-          <div class="item">
-            🏋️ ${translateExercise(p.name)}
-            <span class="badge">${p.level}</span>
-            <span class="badge">${p.kcal} kcal</span>
-          </div>
-        `).join("")}
-
-        <div class="item">🔥 ${x.plan.totalKcal} kcal</div>
-        <div class="item">📊 强度差：${x.plan.diff}</div>
-      </div>
-    `;
-  });
-}
-
-/* 清除历史 */
-function clearHistory(){
-  if(confirm("确定清除所有健身历史？")){
-    localStorage.removeItem("fitnessHistory");
-    document.getElementById("historyBox").innerHTML="";
-  }
-}
-
-/* 初始化日期 */
-document.getElementById("date").value=new Date().toISOString().slice(0,10);
-</script>
+    window.onload = () => {
+      bindFitnessTexts();  // 绑定文案
+      initFitnessPage();   // 初始化逻辑
+    };
+  </script>
 
 </body>
 </html>
