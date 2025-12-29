@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-  <title>今日早餐</title>
+  <title>Breakfast</title>
 
   <!-- 全站样式 -->
   <link rel="stylesheet" href="/common/common.css">
@@ -11,10 +11,9 @@
 
 <body>
 
-  <!-- 页面主体 -->
   <div class="page">
 
-    <!-- 标题与副标题（由 lang.js 翻译） -->
+    <!-- 标题与副标题（翻译） -->
     <h1 id="t_title_breakfast"></h1>
     <div class="subtitle" id="t_subtitle_breakfast"></div>
 
@@ -25,7 +24,7 @@
     <label id="t_date_label"></label>
     <input id="dateInput" type="date" />
 
-    <!-- 按钮 -->
+    <!-- 生成按钮 -->
     <button id="btnGenerate"></button>
 
     <!-- 生成的选项 -->
@@ -37,6 +36,7 @@
     <!-- 历史记录 -->
     <div id="historyBox"></div>
 
+    <!-- 历史按钮 -->
     <button class="secondary" id="btnHistory"></button>
     <button class="danger" id="btnClear"></button>
 
@@ -48,7 +48,7 @@
   <script src="/common/common.js"></script>
   <script src="/common/page-common.js"></script>
 
-  <!-- 早餐数据 -->
+  <!-- 早餐数据（含多语言） -->
   <script src="/data/breakfast.js"></script>
 
   <!-- 早餐页面逻辑 -->
@@ -56,7 +56,9 @@
 
   <!-- 初始化 -->
   <script>
-    initPageCommon();   // 注入导航栏、主题、语言菜单
+    initPageCommon();     // 导航栏、语言切换、主题
+    bindBreakfastTexts(); // 绑定翻译
+    initBreakfastPage();  // 初始化页面逻辑（你会在 breakfast.js 里写）
   </script>
 
 </body>
