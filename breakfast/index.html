@@ -1,658 +1,155 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🍳 今日早餐推荐</title>
+  <meta charset="UTF-8">
+  <title>早餐推荐</title>
 
-<style>
-/* ========== 基础样式 ========== */
-body{
-    font-family:-apple-system,BlinkMacSystemFont,"PingFang SC",Arial;
-    background:#f7f7f7;
-    margin:0;
-    padding:16px;
-    color:#222;
-    transition:background 0.3s, color 0.3s;
-}
-
-h1{
-    font-size:28px;
-    margin-bottom:10px;
-    text-align:center;
-}
-
-.subtitle{
-    color:#666;
-    margin-bottom:20px;
-    text-align:center;
-}
-
-/* ========== 顶部按钮区域 ========== */
-.top-bar{
-    display:flex;
-    justify-content:flex-end;
-    align-items:center;
-    gap:14px;
-    margin-bottom:10px;
-}
-
-.icon-btn{
-    background:#fff;
-    border-radius:50%;
-    width:38px;
-    height:38px;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    font-size:18px;
-    cursor:pointer;
-    box-shadow:0 4px 10px rgba(0,0,0,0.08);
-    transition:transform 0.2s, box-shadow 0.2s;
-}
-
-.icon-btn:hover{
-    transform:scale(1.1);
-    box-shadow:0 6px 16px rgba(0,0,0,0.15);
-}
-
-/* ========== 语言菜单 ========== */
-#langMenu{
-    position:absolute;
-    right:16px;
-    top:60px;
-    background:#fff;
-    border-radius:12px;
-    box-shadow:0 6px 16px rgba(0,0,0,0.15);
-    padding:10px 0;
-    width:160px;
-    display:none;
-    z-index:10;
-}
-
-.lang-title{
-    padding:10px 16px;
-    font-size:13px;
-    color:#666;
-    border-bottom:1px solid #eee;
-}
-
-.lang-item{
-    padding:10px 16px;
-    font-size:15px;
-    cursor:pointer;
-    transition:background 0.2s;
-}
-
-.lang-item:hover{
-    background:#f2f2f7;
-}
-
-/* ========== 输入框与按钮 ========== */
-label{
-    display:block;
-    margin:12px 0 6px;
-    font-size:15px;
-}
-
-input,button{
-    width:100%;
-    padding:12px;
-    font-size:17px;
-    border-radius:12px;
-    border:1px solid #ccc;
-    background:#fff;
-    box-sizing:border-box;
-}
-
-button{
-    background:#007aff;
-    color:#fff;
-    border:none;
-    margin-top:10px;
-    cursor:pointer;
-    transition:background 0.2s, transform 0.2s;
-}
-
-button:hover{
-    background:#006be6;
-    transform:translateY(-2px);
-}
-
-button.secondary{
-    background:#e5e5ea;
-    color:#000;
-}
-
-button.secondary:hover{
-    background:#d5d5d8;
-}
-
-button.danger{
-    background:#ff3b30;
-}
-
-button.danger:hover{
-    background:#e02a25;
-}
-
-/* ========== 卡片（App Launcher 风格） ========== */
-.card{
-    background:#fff;
-    border-radius:18px;
-    padding:18px;
-    margin:16px 0;
-    box-shadow:0 6px 16px rgba(0,0,0,0.06);
-    transition:transform 0.2s, box-shadow 0.2s;
-}
-
-.card:hover{
-    transform:translateY(-4px);
-    box-shadow:0 10px 24px rgba(0,0,0,0.12);
-}
-
-.item{
-    margin:6px 0;
-    font-size:16px;
-}
-
-.nutrition{
-    font-size:14px;
-    color:#555;
-    margin-top:6px;
-}
-
-/* ========== 导航栏 ========== */
-.nav{
-    margin-bottom:16px;
-    font-size:15px;
-    text-align:center;
-}
-
-.nav a{
-    text-decoration:none;
-    color:#007aff;
-}
-
-/* ========== 页脚 ========== */
-.footer{
-    margin-top:40px;
-    text-align:center;
-    font-size:14px;
-    color:#999;
-    padding-bottom:20px;
-}
-
-/* ========== 深色模式 ========== */
-.dark{
-    background:#1c1c1e;
-    color:#f2f2f7;
-}
-
-.dark input,
-.dark button,
-.dark .card{
-    background:#2c2c2e;
-    color:#f2f2f7;
-    border-color:#3a3a3c;
-}
-
-.dark button.secondary{
-    background:#3a3a3c;
-    color:#fff;
-}
-
-.dark button.secondary:hover{
-    background:#4a4a4c;
-}
-
-.dark button.danger{
-    background:#ff453a;
-}
-
-.dark #langMenu{
-    background:#2c2c2e;
-    box-shadow:0 6px 16px rgba(0,0,0,0.5);
-}
-
-.dark .lang-title{
-    color:#ccc;
-    border-bottom:1px solid #444;
-}
-
-.dark .lang-item:hover{
-    background:#3a3a3c;
-}
-
-.dark .icon-btn{
-    background:#2c2c2e;
-    color:#fff;
-    box-shadow:0 4px 10px rgba(0,0,0,0.5);
-}
-
-.dark .footer{
-    color:#aaa;
-}
-</style>
+  <!-- 全站样式 -->
+  <link rel="stylesheet" href="/common/common.css">
 </head>
 
 <body>
 
-<!-- 顶部按钮：🌐 语言切换 + 🌙 深色模式 -->
-<div class="top-bar">
-  <div class="icon-btn" id="langBtn">🌐</div>
+  <!-- 页面标题 -->
+  <h1 id="t_title_breakfast"></h1>
+  <div class="subtitle" id="t_subtitle_breakfast"></div>
 
-  <div id="langMenu">
-    <div class="lang-title">🌐 Language</div>
-    <div class="lang-item" data-lang="zh-CN">🇨🇳 简体中文</div>
-    <div class="lang-item" data-lang="zh-HK">🇭🇰 粤语繁體</div>
-    <div class="lang-item" data-lang="en">🇺🇸 English</div>
+  <!-- 输入区 -->
+  <div class="input-area">
+    <label id="t_name_label"></label>
+    <input id="nameInput" placeholder="" />
+
+    <label id="t_date_label"></label>
+    <input id="dateInput" type="date" />
   </div>
 
-  <div class="icon-btn" id="themeBtn">🌙</div>
-</div>
+  <!-- 按钮 -->
+  <button id="btnGenerate" class="primary"></button>
+  <button id="btnHistory" class="secondary"></button>
+  <button id="btnClear" class="danger"></button>
 
-<!-- 导航栏 -->
-<div class="nav">
-  <a href="/">🏠 首页</a> ·
-  <a href="/breakfast/">🍳 早餐</a> ·
-  <a href="/play/">🗺 游玩</a> ·
-  <a href="/fitness/">💪 健身</a>
-</div>
+  <!-- 今日早餐 -->
+  <h2 id="t_today_breakfast"></h2>
+  <div id="result"></div>
 
-<h1 id="t_title">🍳 今日早餐推荐</h1>
-<div class="subtitle" id="t_subtitle">简单 · 清晰 · 不纠结</div>
+  <!-- 历史记录 -->
+  <div id="history"></div>
 
-<label id="t_name_label">👤 大名</label>
-<input id="name" placeholder="请输入你的名字">
+  <!-- 公共逻辑 -->
+  <script src="/common/lang.js"></script>
+  <script src="/common/common.js"></script>
+  <script src="/common/page-common.js"></script>
 
-<label id="t_date_label">📅 选择日期</label>
-<input id="date" type="date">
+  <!-- 早餐数据 -->
+  <script>
+    let breakfastData = {};
 
-<button onclick="generate()" id="t_btn_generate">🍳 推荐早餐</button>
-
-<div id="options"></div>
-<div id="final"></div>
-<div id="historyBox"></div>
-
-<button class="secondary" onclick="showHistory()" id="t_btn_history">📜 查看历史</button>
-<button class="danger" onclick="clearHistory()" id="t_btn_clear">🧹 清除历史</button>
-
-<footer class="footer" id="t_footer">— Designed by BY —</footer>
-
-<script>
-/* ============================
-   多语言包（UI + 食物名称）
-   ============================ */
-
-const LANG = {
-  "zh-CN": {
-    title: "🍳 今日早餐推荐",
-    subtitle: "简单 · 清晰 · 不纠结",
-    name_label: "👤 大名",
-    name_placeholder: "请输入你的名字",
-    date_label: "📅 选择日期",
-    btn_generate: "🍳 推荐早餐",
-    btn_history: "📜 查看历史",
-    btn_clear: "🧹 清除历史",
-    footer: "— Designed by BY —",
-    history_empty: "暂无历史记录",
-    today_breakfast: "✅ 今日早餐",
-    option: "选项",
-    choose: "选择这个",
-
-    drinks: {
-      "豆浆": "豆浆",
-      "温牛奶": "温牛奶",
-      "燕麦奶": "燕麦奶",
-      "黑咖啡": "黑咖啡",
-      "绿茶": "绿茶",
-      "温水": "温水"
-    },
-    staples: {
-      "全麦吐司": "全麦吐司",
-      "小馒头": "小馒头",
-      "即食燕麦": "即食燕麦",
-      "白粥 / 小米粥": "白粥 / 小米粥",
-      "鸡蛋（煮/蒸）": "鸡蛋（煮/蒸）",
-      "鸡蛋三明治": "鸡蛋三明治"
-    },
-    desserts: {
-      "水果": "水果",
-      "原味酸奶": "原味酸奶",
-      "坚果一小把": "坚果一小把",
-      "红豆 / 绿豆": "红豆 / 绿豆",
-      "玉米 / 红薯": "玉米 / 红薯",
-      "不吃甜点": "不吃甜点"
+    async function loadBreakfastData() {
+      const res = await fetch("/data/breakfast.json");
+      breakfastData = await res.json();
     }
-  },
+  </script>
 
-  "zh-HK": {
-    title: "🍳 今日早餐推薦",
-    subtitle: "簡單 · 清晰 · 唔糾結",
-    name_label: "👤 大名",
-    name_placeholder: "請輸入你嘅名字",
-    date_label: "📅 選擇日期",
-    btn_generate: "🍳 推薦早餐",
-    btn_history: "📜 查看歷史",
-    btn_clear: "🧹 清除歷史",
-    footer: "— Designed by BY —",
-    history_empty: "暫無歷史記錄",
-    today_breakfast: "✅ 今日早餐",
-    option: "選項",
-    choose: "揀呢個",
+  <!-- 页面逻辑 -->
+  <script>
+    async function initBreakfastPage() {
+      await loadBreakfastData();   // 加载早餐数据
+      initPageCommon();            // 注入导航栏、顶部按钮、主题等
 
-    drinks: {
-      "豆浆": "豆漿",
-      "温牛奶": "暖牛奶",
-      "燕麦奶": "燕麥奶",
-      "黑咖啡": "黑咖啡",
-      "绿茶": "綠茶",
-      "温水": "暖水"
-    },
-    staples: {
-      "全麦吐司": "全麥多士",
-      "小馒头": "小饅頭",
-      "即食燕麦": "即食燕麥",
-      "白粥 / 小米粥": "白粥 / 小米粥",
-      "鸡蛋（煮/蒸）": "雞蛋（煮/蒸）",
-      "鸡蛋三明治": "雞蛋三文治"
-    },
-    desserts: {
-      "水果": "生果",
-      "原味酸奶": "原味乳酪",
-      "坚果一小把": "堅果一小撮",
-      "红豆 / 绿豆": "紅豆 / 綠豆",
-      "玉米 / 红薯": "粟米 / 番薯",
-      "不吃甜点": "唔食甜品"
+      bindBreakfastTexts();        // 绑定页面文案
+      setupBreakfastLogic();       // 绑定按钮逻辑
+      loadHistory();               // 加载历史记录
     }
-  },
 
-  "en": {
-    title: "🍳 Today's Breakfast",
-    subtitle: "Simple · Clear · No Overthinking",
-    name_label: "👤 Name",
-    name_placeholder: "Enter your name",
-    date_label: "📅 Select Date",
-    btn_generate: "🍳 Generate Breakfast",
-    btn_history: "📜 View History",
-    btn_clear: "🧹 Clear History",
-    footer: "— Designed by BY —",
-    history_empty: "No history yet",
-    today_breakfast: "✅ Today's Breakfast",
-    option: "Option",
-    choose: "Choose this",
+    /* 绑定页面文案 */
+    function bindBreakfastTexts() {
+      document.getElementById("t_title_breakfast").textContent = t("title_breakfast");
+      document.getElementById("t_subtitle_breakfast").textContent = t("subtitle_breakfast");
+      document.getElementById("t_name_label").textContent = t("name_label");
+      document.getElementById("t_date_label").textContent = t("date_label");
+      document.getElementById("btnGenerate").textContent = t("btn_generate_breakfast");
+      document.getElementById("btnHistory").textContent = t("btn_history");
+      document.getElementById("btnClear").textContent = t("btn_clear");
+      document.getElementById("t_today_breakfast").textContent = t("today_breakfast");
 
-    drinks: {
-      "豆浆": "Soy Milk",
-      "温牛奶": "Warm Milk",
-      "燕麦奶": "Oat Milk",
-      "黑咖啡": "Black Coffee",
-      "绿茶": "Green Tea",
-      "温水": "Warm Water"
-    },
-    staples: {
-      "全麦吐司": "Whole Wheat Toast",
-      "小馒头": "Steamed Bun",
-      "即食燕麦": "Instant Oatmeal",
-      "白粥 / 小米粥": "Rice Porridge / Millet Porridge",
-      "鸡蛋（煮/蒸）": "Egg (Boiled/Steamed)",
-      "鸡蛋三明治": "Egg Sandwich"
-    },
-    desserts: {
-      "水果": "Fruit",
-      "原味酸奶": "Plain Yogurt",
-      "坚果一小把": "A Handful of Nuts",
-      "红豆 / 绿豆": "Red Bean / Mung Bean",
-      "玉米 / 红薯": "Corn / Sweet Potato",
-      "不吃甜点": "No Dessert"
+      document.getElementById("nameInput").placeholder = t("name_placeholder");
     }
-  }
-};
 
-/* ============================
-   深色模式
-   ============================ */
-
-let dark = localStorage.getItem("darkMode") === "true";
-
-function applyTheme(){
-  if(dark){
-    document.body.classList.add("dark");
-    document.getElementById("themeBtn").innerText = "☀️";
-  }else{
-    document.body.classList.remove("dark");
-    document.getElementById("themeBtn").innerText = "🌙";
-  }
-}
-applyTheme();
-
-document.getElementById("themeBtn").onclick = () => {
-  dark = !dark;
-  localStorage.setItem("darkMode", dark);
-  applyTheme();
-};
-
-/* ============================
-   语言切换
-   ============================ */
-
-let currentLang = localStorage.getItem("lang") || "zh-CN";
-
-function applyLang(){
-  const t = LANG[currentLang];
-
-  document.getElementById("t_title").innerText = t.title;
-  document.getElementById("t_subtitle").innerText = t.subtitle;
-  document.getElementById("t_name_label").innerText = t.name_label;
-  document.getElementById("name").placeholder = t.name_placeholder;
-  document.getElementById("t_date_label").innerText = t.date_label;
-  document.getElementById("t_btn_generate").innerText = t.btn_generate;
-  document.getElementById("t_btn_history").innerText = t.btn_history;
-  document.getElementById("t_btn_clear").innerText = t.btn_clear;
-  document.getElementById("t_footer").innerText = t.footer;
-}
-applyLang();
-
-document.getElementById("langBtn").onclick = () => {
-  const menu = document.getElementById("langMenu");
-  menu.style.display = menu.style.display === "block" ? "none" : "block";
-};
-
-document.querySelectorAll(".lang-item").forEach(item => {
-  item.onclick = () => {
-    currentLang = item.dataset.lang;
-    localStorage.setItem("lang", currentLang);
-    document.getElementById("langMenu").style.display = "none";
-    applyLang();
-    renderHistory();
-  };
-});
-
-document.addEventListener("click", (e) => {
-  if (!e.target.closest("#langBtn") && !e.target.closest("#langMenu")) {
-    document.getElementById("langMenu").style.display = "none";
-  }
-});
-
-/* ============================
-   早餐数据（原始中文 key）
-   ============================ */
-
-const drinks = [
- {name:"豆浆",k:80,p:7,c:8,f:3},
- {name:"温牛奶",k:120,p:8,c:12,f:5},
- {name:"燕麦奶",k:110,p:3,c:16,f:4},
- {name:"黑咖啡",k:10,p:1,c:1,f:0},
- {name:"绿茶",k:0,p:0,c:0,f:0},
- {name:"温水",k:0,p:0,c:0,f:0}
-];
-
-const staples = [
- {name:"全麦吐司",k:160,p:6,c:28,f:2},
- {name:"小馒头",k:180,p:5,c:35,f:1},
- {name:"即食燕麦",k:150,p:5,c:27,f:3},
- {name:"白粥 / 小米粥",k:120,p:3,c:26,f:0},
- {name:"鸡蛋（煮/蒸）",k:90,p:7,c:1,f:6},
- {name:"鸡蛋三明治",k:250,p:12,c:30,f:8}
-];
-
-const desserts = [
- {name:"水果",k:80,p:1,c:20,f:0},
- {name:"原味酸奶",k:120,p:6,c:12,f:4},
- {name:"坚果一小把",k:100,p:3,c:4,f:8},
- {name:"红豆 / 绿豆",k:110,p:4,c:22,f:1},
- {name:"玉米 / 红薯",k:130,p:2,c:30,f:0},
- {name:"不吃甜点",k:0,p:0,c:0,f:0}
-];
-
-function rand(arr){return arr[Math.floor(Math.random()*arr.length)];}
-
-function translateFood(name){
-  const t = LANG[currentLang];
-  return (
-    t.drinks[name] ||
-    t.staples[name] ||
-    t.desserts[name] ||
-    name
-  );
-}
-
-function makeMeal(){
-  const d = rand(drinks);
-  const s = rand(staples);
-  const de = rand(desserts);
-
-  return {
-    d, s, de,
-    total:{
-      kcal:d.k+s.k+de.k,
-      p:d.p+s.p+de.p,
-      c:d.c+s.c+de.c,
-      f:d.f+s.f+de.f
+    /* 获取当前语言的早餐名称 */
+    function getName(item) {
+      return item[currentLang] || item["zh-CN"];
     }
-  };
-}
 
-<script>
-/* ============================
-   生成早餐
-   ============================ */
+    /* 随机选择 */
+    function rand(arr) {
+      return arr[Math.floor(Math.random() * arr.length)];
+    }
 
-function generate(){
-  const name = document.getElementById("name").value.trim();
-  if(!name){
-    alert(LANG[currentLang].name_placeholder);
-    return;
-  }
+    /* 生成早餐 */
+    function generateBreakfast() {
+      const drink = rand(breakfastData.drinks);
+      const staple = rand(breakfastData.staples);
+      const dessert = rand(breakfastData.desserts);
 
-  document.getElementById("options").innerHTML = "⏳ ...";
-  document.getElementById("final").innerHTML = "";
-  document.getElementById("historyBox").innerHTML = "";
-
-  setTimeout(()=>{
-    const box = document.getElementById("options");
-    box.innerHTML = "";
-
-    for(let i=0;i<3;i++){
-      const m = makeMeal();
-      const t = LANG[currentLang];
-
-      const div = document.createElement("div");
-      div.className = "card";
-      div.innerHTML = `
-        <strong>${t.option} ${i+1}</strong>
-        <div class="item">🥤 ${translateFood(m.d.name)}</div>
-        <div class="item">🍞 ${translateFood(m.s.name)}</div>
-        <div class="item">🍮 ${translateFood(m.de.name)}</div>
-        <div class="nutrition">
-          🔥 ${m.total.kcal} kcal ·
-          🥚 ${m.total.p}g ·
-          🍞 ${m.total.c}g ·
-          🧈 ${m.total.f}g
+      const resultHTML = `
+        <div class="card">
+          <p><strong>${t("option")} 1</strong></p>
+          <p>🥤 ${getName(drink)}</p>
+          <p>🍞 ${getName(staple)}</p>
+          <p>🍮 ${getName(dessert)}</p>
         </div>
-        <button onclick='choose(${JSON.stringify(m)}, "${name}")'>
-          ${t.choose}
-        </button>
       `;
-      box.appendChild(div);
+
+      document.getElementById("result").innerHTML = resultHTML;
+
+      saveHistory({
+        date: document.getElementById("dateInput").value,
+        drink: getName(drink),
+        staple: getName(staple),
+        dessert: getName(dessert)
+      });
     }
-  },600);
-}
 
-/* ============================
-   选择早餐
-   ============================ */
+    /* 历史记录 */
+    function saveHistory(item) {
+      const history = JSON.parse(localStorage.getItem("breakfast_history") || "[]");
+      history.unshift(item);
+      localStorage.setItem("breakfast_history", JSON.stringify(history));
+    }
 
-function choose(m,name){
-  const h = JSON.parse(localStorage.getItem("breakfastHistory")||"[]");
-  h.push({date:new Date().toLocaleDateString(),name,meal:m});
-  localStorage.setItem("breakfastHistory",JSON.stringify(h));
+    function loadHistory() {
+      const history = JSON.parse(localStorage.getItem("breakfast_history") || "[]");
+      const container = document.getElementById("history");
 
-  const t = LANG[currentLang];
+      if (history.length === 0) {
+        container.innerHTML = `<p>${t("history_empty")}</p>`;
+        return;
+      }
 
-  document.getElementById("options").innerHTML = "";
-  document.getElementById("final").innerHTML = `
-    <div class="card">
-      <strong>${t.today_breakfast}</strong>
-      <div class="item">🥤 ${translateFood(m.d.name)}</div>
-      <div class="item">🍞 ${translateFood(m.s.name)}</div>
-      <div class="item">🍮 ${translateFood(m.de.name)}</div>
-      <div class="nutrition">
-        🔥 ${m.total.kcal} kcal ·
-        🥚 ${m.total.p}g ·
-        🍞 ${m.total.c}g ·
-        🧈 ${m.total.f}g
-      </div>
-    </div>
-  `;
-}
+      container.innerHTML = history.map(h => `
+        <div class="card">
+          <p>${h.date}</p>
+          <p>🥤 ${h.drink}</p>
+          <p>🍞 ${h.staple}</p>
+          <p>🍮 ${h.dessert}</p>
+        </div>
+      `).join("");
+    }
 
-/* ============================
-   历史记录
-   ============================ */
+    function clearHistory() {
+      localStorage.removeItem("breakfast_history");
+      loadHistory();
+    }
 
-function renderHistory(){
-  const box = document.getElementById("historyBox");
-  const h = JSON.parse(localStorage.getItem("breakfastHistory")||"[]");
-  const t = LANG[currentLang];
+    /* 按钮绑定 */
+    function setupBreakfastLogic() {
+      document.getElementById("btnGenerate").onclick = generateBreakfast;
+      document.getElementById("btnHistory").onclick = loadHistory;
+      document.getElementById("btnClear").onclick = clearHistory;
+    }
 
-  box.innerHTML = "";
-
-  if(!h.length){
-    box.innerHTML = `<div class="card">${t.history_empty}</div>`;
-    return;
-  }
-
-  h.forEach(x=>{
-    box.innerHTML += `
-      <div class="card">
-        <strong>${x.date} · ${x.name}</strong>
-        <div class="item">🥤 ${translateFood(x.meal.d.name)}</div>
-        <div class="item">🍞 ${translateFood(x.meal.s.name)}</div>
-        <div class="item">🍮 ${translateFood(x.meal.de.name)}</div>
-        <div class="nutrition">🔥 ${x.meal.total.kcal} kcal</div>
-      </div>
-    `;
-  });
-}
-
-function showHistory(){
-  renderHistory();
-}
-
-function clearHistory(){
-  if(confirm("确定清除所有早餐历史？")){
-    localStorage.removeItem("breakfastHistory");
-    document.getElementById("historyBox").innerHTML = "";
-  }
-}
-
-/* ============================
-   初始化日期
-   ============================ */
-document.getElementById("date").value = new Date().toISOString().slice(0,10);
-</script>
+    initBreakfastPage();
+  </script>
 
 </body>
 </html>
