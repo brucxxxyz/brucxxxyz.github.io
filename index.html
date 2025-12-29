@@ -80,6 +80,31 @@ a{
   box-shadow:0 6px 16px rgba(0,0,0,0.15);
 }
 
+/* ========== 语言菜单 ========== */
+#langMenu{
+  position:absolute;
+  right:24px;
+  top:60px;
+  background:#fff;
+  border-radius:12px;
+  box-shadow:0 6px 16px rgba(0,0,0,0.15);
+  padding:10px 0;
+  width:160px;
+  display:none;
+  z-index:10;
+}
+
+.lang-item{
+  padding:10px 16px;
+  font-size:15px;
+  cursor:pointer;
+  transition:background 0.2s;
+}
+
+.lang-item:hover{
+  background:#f2f2f7;
+}
+
 /* ========== 深色模式 ========== */
 .dark{
   background:#1c1c1e;
@@ -102,6 +127,15 @@ a{
   box-shadow:0 4px 10px rgba(0,0,0,0.5);
 }
 
+.dark #langMenu{
+  background:#2c2c2e;
+  box-shadow:0 6px 16px rgba(0,0,0,0.5);
+}
+
+.dark .lang-item:hover{
+  background:#3a3a3c;
+}
+
 .footer{
   text-align:center;
   color:#999;
@@ -119,6 +153,23 @@ a{
 <!-- 顶部按钮：🌐 语言切换 + 🌙 深色模式 -->
 <div class="top-bar">
   <div class="icon-btn" id="langBtn">🌐</div>
+
+  <!-- 下拉菜单（含固定前缀 🌐 Language） -->
+  <div id="langMenu">
+    <div style="
+      padding:10px 16px;
+      font-size:13px;
+      color:#666;
+      border-bottom:1px solid #eee;
+    ">
+      🌐 Language
+    </div>
+
+    <div class="lang-item" data-lang="zh-CN">🇨🇳 简体中文</div>
+    <div class="lang-item" data-lang="zh-HK">🇭🇰 繁體中文</div>
+    <div class="lang-item" data-lang="en">🇺🇸 English</div>
+  </div>
+
   <div class="icon-btn" id="themeBtn">🌙</div>
 </div>
 
@@ -170,6 +221,7 @@ const LANG = {
 <!-- ===================== 语言切换逻辑 ===================== -->
 <script>
 let currentLang = localStorage.getItem("lang") || "zh-CN";
+const langMenu = document.getElementById("langMenu");
 
 function applyLang(){
   const t = LANG[currentLang];
@@ -179,16 +231,29 @@ function applyLang(){
   document.getElementById("t_fitness").innerText = t.fitness;
   document.getElementById("t_footer").innerText = t.footer;
 }
-
 applyLang();
 
+// 点击 🌐 打开/关闭菜单
 document.getElementById("langBtn").onclick = () => {
-  const order = ["zh-CN","zh-HK","en"];
-  let idx = order.indexOf(currentLang);
-  currentLang = order[(idx+1)%3];
-  localStorage.setItem("lang", currentLang);
-  applyLang();
+  langMenu.style.display = langMenu.style.display === "block" ? "none" : "block";
 };
+
+// 点击语言项切换
+document.querySelectorAll(".lang-item").forEach(item => {
+  item.onclick = () => {
+    currentLang = item.dataset.lang;
+    localStorage.setItem("lang", currentLang);
+    langMenu.style.display = "none";
+    applyLang();
+  };
+});
+
+// 点击外部关闭菜单
+document.addEventListener("click", (e) => {
+  if (!e.target.closest("#langBtn") && !e.target.closest("#langMenu")) {
+    langMenu.style.display = "none";
+  }
+});
 </script>
 
 <!-- ===================== 深色模式逻辑 ===================== -->
