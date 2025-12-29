@@ -1,17 +1,17 @@
-
 /* ============================================================
    子页面通用框架（导航栏、顶部按钮、footer、语言切换）
    ============================================================ */
 
 function initPageCommon() {
-  injectLayout();
-  initLangMenu();
-  initThemeToggle();
-  applyNavTranslation();
+  injectLayout();        // 注入统一布局
+  initLangMenu();        // 语言菜单逻辑
+  initThemeToggle();     // 深色模式
+  applyNavTranslation(); // 导航栏翻译
 }
 
 /* 注入公共布局 */
 function injectLayout() {
+  // 顶部按钮 + 导航栏
   document.body.insertAdjacentHTML("afterbegin", `
     <!-- 顶部按钮 -->
     <div class="top-bar">
@@ -36,6 +36,7 @@ function injectLayout() {
     </div>
   `);
 
+  // 底部落款
   document.body.insertAdjacentHTML("beforeend", `
     <footer class="footer" id="t_footer"></footer>
   `);
@@ -66,7 +67,7 @@ function initLangMenu() {
     item.onclick = () => {
       const lang = item.dataset.lang;
       localStorage.setItem("lang", lang);
-      location.reload(); // 重新加载页面以应用翻译
+      location.reload(); // 刷新页面以应用翻译
     };
   });
 }
