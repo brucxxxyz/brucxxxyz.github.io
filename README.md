@@ -1,7 +1,7 @@
 # 🐲 brucxxxyz.github.io
 
 A modular front‑end playground exploring how everyday rituals can be designed, structured, and elevated through simple, intuitive web experiences.  
-All modules — Breakfast, Fitness, and Play — are now integrated directly into the homepage for a unified flow.
+All modules - Breakfast, Fitness, and Play - are now integrated directly into the homepage for a unified flow.
 
 ## 📁 Modules
 
