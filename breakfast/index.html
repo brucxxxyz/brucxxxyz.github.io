@@ -5,11 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
   <title>Breakfast</title>
 
-  <!-- 全站样式 -->
   <link rel="stylesheet" href="/common/common.css">
 
   <style>
-    /* 三条横条按钮 */
     .bar {
       height: 52px;
       border-radius: 14px;
@@ -53,55 +51,40 @@
 
   <div class="page">
 
-    <!-- 导航栏（由 page-common.js 自动注入） -->
-
-    <!-- 页面标题 -->
     <h1 id="t_title_breakfast"></h1>
     <div class="subtitle" id="t_subtitle_breakfast"></div>
 
-    <!-- 输入区 -->
     <label id="t_name_label"></label>
     <input id="nameInput" placeholder="" />
 
     <label id="t_date_label"></label>
     <input id="dateInput" type="date" />
 
-    <!-- 三条横条按钮 -->
     <div class="bar blue" id="barBlue"></div>
     <div class="bar gray" id="barGray"></div>
     <div class="bar red" id="barRed"></div>
 
-    <!-- 推荐选项 -->
     <div id="options"></div>
-
-    <!-- 最终选择 -->
     <div id="final"></div>
-
-    <!-- 历史记录 -->
     <div id="historyBox"></div>
 
     <footer id="t_footer"></footer>
   </div>
 
-  <!-- 公共逻辑 -->
   <script src="/common/lang.js"></script>
   <script src="/common/common.js"></script>
   <script src="/common/page-common.js"></script>
 
-  <!-- 早餐数据（含多语言） -->
   <script src="/data/breakfast.js"></script>
-
-  <!-- 早餐页面逻辑 -->
   <script src="/breakfast/breakfast.js"></script>
 
-  <!-- 初始化 -->
   <script>
-  initPageCommon();
+    initPageCommon();
 
-  window.onload = () => {
-    bindBreakfastTexts();
-    initBreakfastPage();
-  };
+    window.onload = () => {
+      bindBreakfastTexts();
+      initBreakfastPage();
+    };
   </script>
 
 </body>
