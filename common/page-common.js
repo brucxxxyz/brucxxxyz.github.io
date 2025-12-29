@@ -1,3 +1,6 @@
+// =============================
+// 主题
+// =============================
 function initTheme() {
   const saved = localStorage.getItem("theme") || "light";
   document.documentElement.setAttribute("data-theme", saved);
@@ -10,6 +13,9 @@ function toggleTheme() {
   localStorage.setItem("theme", next);
 }
 
+// =============================
+// 构建导航栏
+// =============================
 function buildNav() {
   const nav = document.createElement("div");
   nav.className = "nav";
@@ -31,6 +37,9 @@ function buildNav() {
   return nav;
 }
 
+// =============================
+// 绑定导航事件
+// =============================
 function bindNavEvents(nav) {
   nav.querySelectorAll(".nav-item").forEach(item => {
     item.onclick = () => {
@@ -48,31 +57,32 @@ function bindNavEvents(nav) {
   document.getElementById("btnTheme").onclick = toggleTheme;
 }
 
+// =============================
+// 高亮当前页面（最终修复版）
+// =============================
 function highlightCurrentPage(nav) {
   const path = location.pathname;
 
-if (path === "/" || path === "/index.html") {
-  document.getElementById("nav_home").classList.add("active");
-} 
-else if (path.startsWith("/breakfast")) {
-  document.getElementById("nav_breakfast").classList.add("active");
-} 
-else if (path.startsWith("/play")) {
-  document.getElementById("nav_play").classList.add("active");
-} 
-else if (path.startsWith("/fitness")) {
-  document.getElementById("nav_fitness").classList.add("active");
-}
-
-
   nav.querySelectorAll(".nav-item").forEach(item => {
     const page = "/" + item.getAttribute("data-page");
-    if (path.includes(page)) {
+
+    // 首页匹配 "/" 或 "/index.html"
+    if (page === "/index.html" && (path === "/" || path === "/index.html")) {
+      item.classList.add("active");
+      return;
+    }
+
+    // 其他页面匹配目录前缀
+    const folder = page.replace("/index.html", ""); // "/breakfast/"
+    if (folder !== "/" && path.startsWith(folder)) {
       item.classList.add("active");
     }
   });
 }
 
+// =============================
+// 初始化
+// =============================
 function initPageCommon() {
   initTheme();
 
