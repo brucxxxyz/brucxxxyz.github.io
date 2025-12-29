@@ -2,7 +2,8 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
-  <title>早餐推荐</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <title>今日早餐</title>
 
   <!-- 全站样式 -->
   <link rel="stylesheet" href="/common/common.css">
@@ -10,30 +11,37 @@
 
 <body>
 
-  <!-- 页面标题 -->
-  <h1 id="t_title_breakfast"></h1>
-  <div class="subtitle" id="t_subtitle_breakfast"></div>
+  <!-- 页面主体 -->
+  <div class="page">
 
-  <!-- 输入区 -->
-  <div class="input-area">
+    <!-- 标题与副标题（由 lang.js 翻译） -->
+    <h1 id="t_title_breakfast"></h1>
+    <div class="subtitle" id="t_subtitle_breakfast"></div>
+
+    <!-- 输入区 -->
     <label id="t_name_label"></label>
     <input id="nameInput" placeholder="" />
 
     <label id="t_date_label"></label>
     <input id="dateInput" type="date" />
+
+    <!-- 按钮 -->
+    <button id="btnGenerate"></button>
+
+    <!-- 生成的选项 -->
+    <div id="options"></div>
+
+    <!-- 最终选择 -->
+    <div id="final"></div>
+
+    <!-- 历史记录 -->
+    <div id="historyBox"></div>
+
+    <button class="secondary" id="btnHistory"></button>
+    <button class="danger" id="btnClear"></button>
+
+    <footer id="t_footer"></footer>
   </div>
-
-  <!-- 按钮 -->
-  <button id="btnGenerate" class="primary"></button>
-  <button id="btnHistory" class="secondary"></button>
-  <button id="btnClear" class="danger"></button>
-
-  <!-- 今日早餐 -->
-  <h2 id="t_today_breakfast"></h2>
-  <div id="result"></div>
-
-  <!-- 历史记录 -->
-  <div id="history"></div>
 
   <!-- 公共逻辑 -->
   <script src="/common/lang.js"></script>
@@ -41,114 +49,14 @@
   <script src="/common/page-common.js"></script>
 
   <!-- 早餐数据 -->
+  <script src="/data/breakfast.js"></script>
+
+  <!-- 早餐页面逻辑 -->
+  <script src="/breakfast/breakfast.js"></script>
+
+  <!-- 初始化 -->
   <script>
-    let breakfastData = {};
-
-    async function loadBreakfastData() {
-      const res = await fetch("/data/breakfast.json");
-      breakfastData = await res.json();
-    }
-  </script>
-
-  <!-- 页面逻辑 -->
-  <script>
-    async function initBreakfastPage() {
-      await loadBreakfastData();   // 加载早餐数据
-      initPageCommon();            // 注入导航栏、顶部按钮、主题等
-
-      bindBreakfastTexts();        // 绑定页面文案
-      setupBreakfastLogic();       // 绑定按钮逻辑
-      loadHistory();               // 加载历史记录
-    }
-
-    /* 绑定页面文案 */
-    function bindBreakfastTexts() {
-      document.getElementById("t_title_breakfast").textContent = t("title_breakfast");
-      document.getElementById("t_subtitle_breakfast").textContent = t("subtitle_breakfast");
-      document.getElementById("t_name_label").textContent = t("name_label");
-      document.getElementById("t_date_label").textContent = t("date_label");
-      document.getElementById("btnGenerate").textContent = t("btn_generate_breakfast");
-      document.getElementById("btnHistory").textContent = t("btn_history");
-      document.getElementById("btnClear").textContent = t("btn_clear");
-      document.getElementById("t_today_breakfast").textContent = t("today_breakfast");
-
-      document.getElementById("nameInput").placeholder = t("name_placeholder");
-    }
-
-    /* 获取当前语言的早餐名称 */
-    function getName(item) {
-      return item[currentLang] || item["zh-CN"];
-    }
-
-    /* 随机选择 */
-    function rand(arr) {
-      return arr[Math.floor(Math.random() * arr.length)];
-    }
-
-    /* 生成早餐 */
-    function generateBreakfast() {
-      const drink = rand(breakfastData.drinks);
-      const staple = rand(breakfastData.staples);
-      const dessert = rand(breakfastData.desserts);
-
-      const resultHTML = `
-        <div class="card">
-          <p><strong>${t("option")} 1</strong></p>
-          <p>🥤 ${getName(drink)}</p>
-          <p>🍞 ${getName(staple)}</p>
-          <p>🍮 ${getName(dessert)}</p>
-        </div>
-      `;
-
-      document.getElementById("result").innerHTML = resultHTML;
-
-      saveHistory({
-        date: document.getElementById("dateInput").value,
-        drink: getName(drink),
-        staple: getName(staple),
-        dessert: getName(dessert)
-      });
-    }
-
-    /* 历史记录 */
-    function saveHistory(item) {
-      const history = JSON.parse(localStorage.getItem("breakfast_history") || "[]");
-      history.unshift(item);
-      localStorage.setItem("breakfast_history", JSON.stringify(history));
-    }
-
-    function loadHistory() {
-      const history = JSON.parse(localStorage.getItem("breakfast_history") || "[]");
-      const container = document.getElementById("history");
-
-      if (history.length === 0) {
-        container.innerHTML = `<p>${t("history_empty")}</p>`;
-        return;
-      }
-
-      container.innerHTML = history.map(h => `
-        <div class="card">
-          <p>${h.date}</p>
-          <p>🥤 ${h.drink}</p>
-          <p>🍞 ${h.staple}</p>
-          <p>🍮 ${h.dessert}</p>
-        </div>
-      `).join("");
-    }
-
-    function clearHistory() {
-      localStorage.removeItem("breakfast_history");
-      loadHistory();
-    }
-
-    /* 按钮绑定 */
-    function setupBreakfastLogic() {
-      document.getElementById("btnGenerate").onclick = generateBreakfast;
-      document.getElementById("btnHistory").onclick = loadHistory;
-      document.getElementById("btnClear").onclick = clearHistory;
-    }
-
-    initBreakfastPage();
+    initPageCommon();   // 注入导航栏、主题、语言菜单
   </script>
 
 </body>
