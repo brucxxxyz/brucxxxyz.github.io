@@ -98,14 +98,15 @@ function initPageCommon() {
     return;
   }
 
-  // 其他页面才显示导航栏
   const nav = buildNav();
 
-  const title = page.querySelector(".title-area");
-  if (title) {
-    title.after(nav);   // 导航栏放在标题下方
+  // 找到语言图标所在区域
+  const topRight = page.querySelector(".top-right");
+
+  if (topRight) {
+    topRight.after(nav);   // 导航栏放在语言图标下方
   } else {
-    page.prepend(nav);  // 兜底方案
+    page.prepend(nav);     // 兜底方案
   }
 
   bindNavEvents(nav);
