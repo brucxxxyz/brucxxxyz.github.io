@@ -51,6 +51,20 @@ function bindNavEvents(nav) {
 function highlightCurrentPage(nav) {
   const path = location.pathname;
 
+if (path === "/" || path === "/index.html") {
+  document.getElementById("nav_home").classList.add("active");
+} 
+else if (path.startsWith("/breakfast")) {
+  document.getElementById("nav_breakfast").classList.add("active");
+} 
+else if (path.startsWith("/play")) {
+  document.getElementById("nav_play").classList.add("active");
+} 
+else if (path.startsWith("/fitness")) {
+  document.getElementById("nav_fitness").classList.add("active");
+}
+
+
   nav.querySelectorAll(".nav-item").forEach(item => {
     const page = "/" + item.getAttribute("data-page");
     if (path.includes(page)) {
