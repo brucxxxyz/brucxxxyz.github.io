@@ -403,3 +403,7 @@ function translateExercise(name){
   const t = LANG[currentLang];
   return t.fitness?.[name] || name;
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+  initLangMenu();
+});
