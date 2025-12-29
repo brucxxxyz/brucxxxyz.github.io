@@ -156,10 +156,7 @@ button.danger:hover{
 }
 
 /* =============================
-   导航栏（最终统一版）
-   ============================= */
-/* =============================
-   导航栏（最终样式）
+   导航栏（居中 + 蓝色 + 加粗）
    ============================= */
 .nav {
   width: 100%;
@@ -167,6 +164,7 @@ button.danger:hover{
   justify-content: center;
   margin: 10px 0 20px 0;
   font-size: 17px;
+  font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", Arial;
 }
 
 .nav-line {
@@ -177,20 +175,20 @@ button.danger:hover{
 
 .nav-item {
   cursor: pointer;
+  color: #007aff;
+  font-weight: 400;
   transition: all 0.2s;
-  color: #007aff;              /* ✅ 蓝色字体 */
 }
 
 .nav-item.active {
-  font-weight: bold;           /* ✅ 加粗 */
-  text-decoration: none;       /* ❌ 不要下划线 */
+  font-weight: 600;       /* ✅ 加粗 */
+  text-decoration: none;  /* ❌ 不要下划线 */
 }
 
 .dot {
   color: #000;
   font-weight: bold;
 }
-
 
 /* ========== 三条按钮（早餐页） ========== */
 .bar {
