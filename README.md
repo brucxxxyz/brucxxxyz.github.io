@@ -27,7 +27,7 @@ Each folder contains its own `index.html` and is designed for standalone use or 
 ## 👤 About the Creator
 
 BY is a campaign analyst and creative technologist who blends data automation with cultural storytelling.  
-This project reflects his passion for turning daily routines—like breakfast, fitness, and play—into modular, shareable experiences.
+This project reflects his passion for turning daily routines-like breakfast, fitness, and play-into modular, shareable experiences.
 
 ---
 
