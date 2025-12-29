@@ -58,6 +58,15 @@ button.danger{background:#ff3b30;}
 
 <body>
 
+<!-- 🌐 语言切换 -->
+<div style="text-align:right; margin-bottom:10px;">
+  <select id="langSwitcher" style="padding:6px; font-size:14px;">
+    <option value="zh-CN">🇨🇳 简体中文</option>
+    <option value="zh-HK">🇭🇰 繁體中文</option>
+    <option value="en">🇺🇸 English</option>
+  </select>
+</div>
+
 <div class="nav">
   <a href="/">🏠 首页</a> ·
   <a href="/breakfast/">🍳 早餐</a> ·
@@ -65,26 +74,112 @@ button.danger{background:#ff3b30;}
   <a href="/fitness/">💪 健身</a>
 </div>
 
-<h1>🍳 今日早餐推荐</h1>
-<div class="subtitle">简单 · 清晰 · 不纠结</div>
+<h1 id="t_title">🍳 今日早餐推荐</h1>
+<div class="subtitle" id="t_subtitle">简单 · 清晰 · 不纠结</div>
 
-<label>👤 大名</label>
+<label id="t_name_label">👤 大名</label>
 <input id="name" placeholder="请输入你的名字">
 
-<label>📅 选择日期</label>
+<label id="t_date_label">📅 选择日期</label>
 <input id="date" type="date">
 
-<button onclick="generate()">🍳 推荐早餐</button>
+<button onclick="generate()" id="t_btn_generate">🍳 推荐早餐</button>
 
 <div id="options"></div>
 <div id="final"></div>
 <div id="historyBox"></div>
 
-<button class="secondary" onclick="showHistory()">📜 查看历史</button>
-<button class="danger" onclick="clearHistory()">🧹 清除历史</button>
+<button class="secondary" onclick="showHistory()" id="t_btn_history">📜 查看历史</button>
+<button class="danger" onclick="clearHistory()" id="t_btn_clear">🧹 清除历史</button>
 
 <script>
-/* ========= 早餐数据（含营养） ========= */
+const LANG = {
+  "zh-CN": {
+    title: "🍳 今日早餐推荐",
+    subtitle: "简单 · 清晰 · 不纠结",
+    name: "👤 大名",
+    namePlaceholder: "请输入你的名字",
+    date: "📅 选择日期",
+    btnGenerate: "🍳 推荐早餐",
+    btnHistory: "📜 查看历史",
+    btnClear: "🧹 清除历史",
+    option: "选项",
+    choose: "选择这个",
+    today: "✅ 今日早餐",
+    noHistory: "暂无历史记录",
+    confirmClear: "确定清除所有早餐历史？"
+  },
+
+  "zh-HK": {
+    title: "🍳 今日早餐推薦",
+    subtitle: "簡單 · 清晰 · 不糾結",
+    name: "👤 大名",
+    namePlaceholder: "請輸入你的名字",
+    date: "📅 選擇日期",
+    btnGenerate: "🍳 推薦早餐",
+    btnHistory: "📜 查看歷史",
+    btnClear: "🧹 清除歷史",
+    option: "選項",
+    choose: "選擇這個",
+    today: "✅ 今日早餐",
+    noHistory: "暫無歷史記錄",
+    confirmClear: "確定清除所有早餐歷史？"
+  },
+
+  "en": {
+    title: "🍳 Today's Breakfast Recommendation",
+    subtitle: "Simple · Clear · No Overthinking",
+    name: "👤 Name",
+    namePlaceholder: "Enter your name",
+    date: "📅 Select Date",
+    btnGenerate: "🍳 Generate Breakfast",
+    btnHistory: "📜 View History",
+    btnClear: "🧹 Clear History",
+    option: "Option",
+    choose: "Choose this",
+    today: "✅ Today's Breakfast",
+    noHistory: "No history yet",
+    confirmClear: "Are you sure to clear all breakfast history?"
+  }
+};
+</script>
+
+<script>
+// 当前语言
+let currentLang = localStorage.getItem("lang") || "zh-CN";
+document.getElementById("langSwitcher").value = currentLang;
+
+// 切换语言
+document.getElementById("langSwitcher").addEventListener("change", function () {
+  localStorage.setItem("lang", this.value);
+  location.reload();
+});
+
+// 应用语言
+function applyLang() {
+  const t = LANG[currentLang];
+
+  document.title = t.title;
+  document.getElementById("t_title").innerText = t.title;
+  document.getElementById("t_subtitle").innerText = t.subtitle;
+
+  document.getElementById("t_name_label").innerText = t.name;
+  document.getElementById("name").placeholder = t.namePlaceholder;
+
+  document.getElementById("t_date_label").innerText = t.date;
+
+  document.getElementById("t_btn_generate").innerText = t.btnGenerate;
+  document.getElementById("t_btn_history").innerText = t.btnHistory;
+  document.getElementById("t_btn_clear").innerText = t.btnClear;
+
+  window.L = t;
+}
+
+applyLang();
+</script>
+
+<!-- 你的原始早餐逻辑（未改动） -->
+<script>
 const drinks=[
  {name:"豆浆",k:80,p:7,c:8,f:3},
  {name:"温牛奶",k:120,p:8,c:12,f:5},
@@ -127,12 +222,11 @@ function makeMeal(){
     };
 }
 
-/* ========= 逻辑 ========= */
 function generate(){
     const name=document.getElementById("name").value.trim();
-    if(!name){alert("请先输入大名");return;}
+    if(!name){alert(L.namePlaceholder);return;}
 
-    document.getElementById("options").innerHTML="⏳ 正在准备早餐...";
+    document.getElementById("options").innerHTML="⏳ ...";
     document.getElementById("final").innerHTML="";
     document.getElementById("historyBox").innerHTML="";
 
@@ -144,7 +238,7 @@ function generate(){
             const div=document.createElement("div");
             div.className="card";
             div.innerHTML=`
-                <strong>选项 ${i+1}</strong>
+                <strong>${L.option} ${i+1}</strong>
                 <div class="item">🥤 ${m.d.name}</div>
                 <div class="item">🍞 ${m.s.name}</div>
                 <div class="item">🍮 ${m.de.name}</div>
@@ -154,7 +248,7 @@ function generate(){
                     🍞 ${m.total.c}g ·
                     🧈 ${m.total.f}g
                 </div>
-                <button onclick='choose(${JSON.stringify(m)}, "${name}")'>选择这个</button>
+                <button onclick='choose(${JSON.stringify(m)}, "${name}")'>${L.choose}</button>
             `;
             box.appendChild(div);
         }
@@ -169,7 +263,7 @@ function choose(m,name){
     document.getElementById("options").innerHTML="";
     document.getElementById("final").innerHTML=`
         <div class="card">
-            <strong>✅ 今日早餐</strong>
+            <strong>${L.today}</strong>
             <div class="item">🥤 ${m.d.name}</div>
             <div class="item">🍞 ${m.s.name}</div>
             <div class="item">🍮 ${m.de.name}</div>
@@ -188,7 +282,7 @@ function showHistory(){
     const h=JSON.parse(localStorage.getItem("breakfastHistory")||"[]");
     box.innerHTML="";
     if(!h.length){
-        box.innerHTML='<div class="card">暂无历史记录</div>';
+        box.innerHTML=`<div class="card">${L.noHistory}</div>`;
         return;
     }
     h.forEach(x=>{
@@ -205,7 +299,7 @@ function showHistory(){
 }
 
 function clearHistory(){
-    if(confirm("确定清除所有早餐历史？")){
+    if(confirm(L.confirmClear)){
         localStorage.removeItem("breakfastHistory");
         document.getElementById("historyBox").innerHTML="";
     }
@@ -214,14 +308,7 @@ function clearHistory(){
 document.getElementById("date").value=new Date().toISOString().slice(0,10);
 </script>
 
-<footer style="
-    margin-top:40px;
-    text-align:center;
-    font-size:14px;
-    color:#999;
-    padding-bottom:20px;
-">
-<footer>— Designed by BY —</footer>
+<footer class="footer">— Designed by BY —</footer>
 
 </body>
 </html>
