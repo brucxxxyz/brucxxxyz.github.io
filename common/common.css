@@ -163,34 +163,30 @@ button.danger:hover{
   display: flex;
   justify-content: center;
   margin: 10px 0 20px 0;
-  font-size: 17px;
+  font-size: 16px;
   font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", Arial;
 }
 
 .nav-line {
   display: flex;
   align-items: center;
-  gap: 6px; /* ✅ 缩小间距 */
+  gap: 6px;
 }
 
 .nav-item {
   cursor: pointer;
   color: #007aff;
   font-weight: 400;
-  font-size: 16px; /* ✅ 微调字体大小 */
-  font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", Arial;
-  transition: all 0.2s;
 }
 
 .nav-item.active {
-  font-weight: 600;       /* ✅ 加粗 */
-  text-decoration: none;  /* ❌ 不要下划线 */
+  font-weight: 600;   /* 加粗 */
+  text-decoration: none;
 }
 
 .dot {
   color: #000;
   font-weight: bold;
-  font-size: 16px;
 }
 
 /* ========== 三条按钮（早餐页） ========== */
