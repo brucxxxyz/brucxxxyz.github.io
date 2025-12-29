@@ -170,13 +170,15 @@ button.danger:hover{
 .nav-line {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 6px; /* ✅ 缩小间距 */
 }
 
 .nav-item {
   cursor: pointer;
   color: #007aff;
   font-weight: 400;
+  font-size: 16px; /* ✅ 微调字体大小 */
+  font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", Arial;
   transition: all 0.2s;
 }
 
@@ -188,6 +190,7 @@ button.danger:hover{
 .dot {
   color: #000;
   font-weight: bold;
+  font-size: 16px;
 }
 
 /* ========== 三条按钮（早餐页） ========== */
