@@ -14,7 +14,7 @@ function toggleTheme() {
 }
 
 // =============================
-// 构建导航栏
+// 构建导航栏（只有导航项）
 // =============================
 function buildNav() {
   const nav = document.createElement("div");
@@ -29,11 +29,6 @@ function buildNav() {
       <span class="nav-item" data-page="play/index.html">🗺️ ${t("nav_play")}</span>
       <span class="dot">·</span>
       <span class="nav-item" data-page="fitness/index.html">💪 ${t("nav_fitness")}</span>
-    </div>
-
-    <div class="nav-right">
-      <span id="btnLang" class="icon">🌐</span>
-      <span id="btnTheme" class="icon">🌙</span>
     </div>
   `;
 
@@ -51,17 +46,25 @@ function bindNavEvents(nav) {
     };
   });
 
-  document.getElementById("btnLang").onclick = () => {
-    const next = currentLang === "zh-CN" ? "zh-HK" :
-                 currentLang === "zh-HK" ? "en" : "zh-CN";
-    setLang(next);
-  };
+  // 语言按钮（在 top-bar 里）
+  const btnLang = document.getElementById("btnLang");
+  if (btnLang) {
+    btnLang.onclick = () => {
+      const next = currentLang === "zh-CN" ? "zh-HK" :
+                   currentLang === "zh-HK" ? "en" : "zh-CN";
+      setLang(next);
+    };
+  }
 
-  document.getElementById("btnTheme").onclick = toggleTheme;
+  // 主题按钮（在 top-bar 里）
+  const btnTheme = document.getElementById("btnTheme");
+  if (btnTheme) {
+    btnTheme.onclick = toggleTheme;
+  }
 }
 
 // =============================
-// 高亮当前页面（最终修复版）
+// 高亮当前页面
 // =============================
 function highlightCurrentPage(nav) {
   const path = location.pathname;
@@ -70,12 +73,10 @@ function highlightCurrentPage(nav) {
     const page = "/" + item.getAttribute("data-page");
 
     // 首页永远不高亮
-    if (page === "/index.html") {
-      return;
-    }
+    if (page === "/index.html") return;
 
     // 其他页面匹配目录前缀
-    const folder = page.replace("/index.html", ""); // "/breakfast/"
+    const folder = page.replace("/index.html", ""); 
     if (path.startsWith(folder)) {
       item.classList.add("active");
     }
@@ -100,13 +101,12 @@ function initPageCommon() {
 
   const nav = buildNav();
 
-  // 找到语言 + 暗夜模式按钮所在的 top-bar
+  // 插入到 top-bar 下方
   const topBar = page.querySelector(".top-bar");
-
   if (topBar) {
-    topBar.insertAdjacentElement("afterend", nav);  
+    topBar.insertAdjacentElement("afterend", nav);
   } else {
-    page.prepend(nav); // 兜底方案
+    page.prepend(nav); // 兜底
   }
 
   bindNavEvents(nav);
