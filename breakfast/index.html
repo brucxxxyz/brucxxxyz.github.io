@@ -7,13 +7,55 @@
 
   <!-- 全站样式 -->
   <link rel="stylesheet" href="/common/common.css">
+
+  <style>
+    /* 三条横条按钮 */
+    .bar {
+      height: 52px;
+      border-radius: 14px;
+      margin: 14px 0;
+      cursor: pointer;
+      transition: opacity .2s;
+    }
+    .bar:active { opacity: 0.6; }
+
+    .blue { background: #007aff; }
+    .gray { background: #c7c7cc; }
+    .red  { background: #ff3b30; }
+
+    .subtitle {
+      font-size: 16px;
+      color: #666;
+      margin-bottom: 16px;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      font-size: 18px;
+      margin-bottom: 12px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      background: #fff;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 14px;
+      padding: 16px;
+      margin-bottom: 14px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+  </style>
 </head>
 
 <body>
 
   <div class="page">
 
-    <!-- 标题与副标题（翻译） -->
+    <!-- 导航栏（由 page-common.js 自动注入） -->
+
+    <!-- 页面标题 -->
     <h1 id="t_title_breakfast"></h1>
     <div class="subtitle" id="t_subtitle_breakfast"></div>
 
@@ -24,10 +66,12 @@
     <label id="t_date_label"></label>
     <input id="dateInput" type="date" />
 
-    <!-- 生成按钮 -->
-    <button id="btnGenerate"></button>
+    <!-- 三条横条按钮 -->
+    <div class="bar blue" id="barBlue"></div>
+    <div class="bar gray" id="barGray"></div>
+    <div class="bar red" id="barRed"></div>
 
-    <!-- 生成的选项 -->
+    <!-- 推荐选项 -->
     <div id="options"></div>
 
     <!-- 最终选择 -->
@@ -35,10 +79,6 @@
 
     <!-- 历史记录 -->
     <div id="historyBox"></div>
-
-    <!-- 历史按钮 -->
-    <button class="secondary" id="btnHistory"></button>
-    <button class="danger" id="btnClear"></button>
 
     <footer id="t_footer"></footer>
   </div>
@@ -58,7 +98,7 @@
   <script>
     initPageCommon();     // 导航栏、语言切换、主题
     bindBreakfastTexts(); // 绑定翻译
-    initBreakfastPage();  // 初始化页面逻辑（你会在 breakfast.js 里写）
+    initBreakfastPage();  // 初始化早餐逻辑（你会在 breakfast.js 里写）
   </script>
 
 </body>
