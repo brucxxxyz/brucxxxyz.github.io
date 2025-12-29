@@ -5,26 +5,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>💪 今日健身推荐</title>
 
-<!-- 全站统一样式 -->
 <link rel="stylesheet" href="/common/common.css">
-
-<!-- 全站统一逻辑（语言 + 深色模式 + 翻译） -->
 <script src="/common/common.js"></script>
 
 </head>
 <body>
 
-<!-- 顶部按钮：🌐 语言切换 + 🌙 深色模式 -->
+<!-- 顶部按钮 -->
 <div class="top-bar">
   <div class="icon-btn" id="langBtn">🌐</div>
-
-  <div id="langMenu">
-    <div class="lang-title">🌐 Language</div>
-    <div class="lang-item" data-lang="zh-CN">🇨🇳 简体中文</div>
-    <div class="lang-item" data-lang="zh-HK">🇭🇰 粤语繁體</div>
-    <div class="lang-item" data-lang="en">🇺🇸 English</div>
-  </div>
-
+  <div id="langMenu"></div>
   <div class="icon-btn" id="themeBtn">🌙</div>
 </div>
 
@@ -36,32 +26,32 @@
   <a href="/fitness/">💪 健身</a>
 </div>
 
-<h1 id="t_title_fitness">💪 今日健身推荐</h1>
-<div class="subtitle" id="t_subtitle_fitness">低强度 · 不纠结 · 在家就练</div>
+<h1 id="t_title_fitness"></h1>
+<div class="subtitle" id="t_subtitle_fitness"></div>
 
-<label id="t_name_label">👤 大名</label>
-<input id="name" placeholder="请输入你的名字">
+<label id="t_name_label"></label>
+<input id="name">
 
-<label id="t_date_label">📅 选择日期</label>
+<label id="t_date_label"></label>
 <input id="date" type="date">
 
-<button onclick="generate()" id="t_btn_generate_fitness">🔥 开始健身</button>
+<button onclick="generate()" id="t_btn_generate_fitness"></button>
 
 <div id="options"></div>
 <div id="final"></div>
 <div id="historyBox"></div>
 
-<button class="secondary" onclick="showHistory()" id="t_btn_history">📜 查看历史</button>
-<button class="danger" onclick="clearHistory()" id="t_btn_clear">🧹 清除历史</button>
+<button class="secondary" onclick="showHistory()" id="t_btn_history"></button>
+<button class="danger" onclick="clearHistory()" id="t_btn_clear"></button>
 
-<footer class="footer" id="t_footer">— Designed by BY —</footer>
+<footer class="footer" id="t_footer"></footer>
 
 <script>
 /* ============================================================
-   健身页面业务逻辑（三语 + 6 类 × 6 动作 + 3 组 × 3 动作）
+   健身业务逻辑（语言与深色模式由 common.js 负责）
    ============================================================ */
 
-/* ========= 6 大类 × 每类 6 动作 ========= */
+/* 6 大类 × 每类 6 动作 */
 const categories = {
   warmup: [
     {name:"站姿提膝收腹", level:1, kcal:60},
@@ -115,7 +105,7 @@ const categories = {
 
 function rand(arr){return arr[Math.floor(Math.random()*arr.length)];}
 
-/* ========= 生成 3 组 × 每组 3 动作 ========= */
+/* 生成 3 组 × 每组 3 动作 */
 function makePlan(){
   const keys = Object.keys(categories);
   const groups = [];
@@ -124,16 +114,13 @@ function makePlan(){
 
   for(let g=0; g<3; g++){
     const group = [];
-
     for(let i=0; i<3; i++){
       const cat = rand(keys);
       const action = rand(categories[cat]);
       group.push(action);
-
       totalKcal += action.kcal;
       levels.push(action.level);
     }
-
     groups.push(group);
   }
 
@@ -141,16 +128,10 @@ function makePlan(){
   const minLevel = Math.min(...levels);
   const diff = maxLevel - minLevel;
 
-  return {
-    groups,
-    totalKcal,
-    maxLevel,
-    minLevel,
-    diff
-  };
+  return { groups, totalKcal, diff };
 }
 
-/* ========= 生成按钮 ========= */
+/* 生成按钮 */
 function generate(){
   const name=document.getElementById("name").value.trim();
   if(!name){
@@ -197,7 +178,7 @@ function generate(){
   },600);
 }
 
-/* ========= 选择方案 ========= */
+/* 选择方案 */
 function choose(p,name){
   const h=JSON.parse(localStorage.getItem("fitnessHistory")||"[]");
   h.push({date:new Date().toLocaleDateString(),name,plan:p});
@@ -225,7 +206,7 @@ function choose(p,name){
   `;
 }
 
-/* ========= 历史记录 ========= */
+/* 历史记录 */
 function showHistory(){
   const box=document.getElementById("historyBox");
   const h=JSON.parse(localStorage.getItem("fitnessHistory")||"[]");
@@ -259,7 +240,7 @@ function showHistory(){
   });
 }
 
-/* ========= 清除历史 ========= */
+/* 清除历史 */
 function clearHistory(){
   if(confirm("确定清除所有健身历史？")){
     localStorage.removeItem("fitnessHistory");
@@ -267,7 +248,7 @@ function clearHistory(){
   }
 }
 
-/* ========= 初始化日期 ========= */
+/* 初始化日期 */
 document.getElementById("date").value=new Date().toISOString().slice(0,10);
 </script>
 
