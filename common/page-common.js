@@ -69,15 +69,14 @@ function highlightCurrentPage(nav) {
   nav.querySelectorAll(".nav-item").forEach(item => {
     const page = "/" + item.getAttribute("data-page");
 
-    // 首页匹配 "/" 或 "/index.html"
-    if (page === "/index.html" && (path === "/" || path === "/index.html")) {
-      item.classList.add("active");
+    // 首页永远不高亮
+    if (page === "/index.html") {
       return;
     }
 
     // 其他页面匹配目录前缀
     const folder = page.replace("/index.html", ""); // "/breakfast/"
-    if (folder !== "/" && path.startsWith(folder)) {
+    if (path.startsWith(folder)) {
       item.classList.add("active");
     }
   });
