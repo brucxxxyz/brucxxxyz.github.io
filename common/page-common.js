@@ -91,8 +91,22 @@ function initPageCommon() {
   const page = document.querySelector(".page");
   if (!page) return;
 
+  const path = location.pathname;
+
+  // 首页不显示导航栏
+  if (path === "/" || path === "/index.html") {
+    return;
+  }
+
+  // 其他页面才显示导航栏
   const nav = buildNav();
-  page.prepend(nav);
+
+  const title = page.querySelector(".title-area");
+  if (title) {
+    title.after(nav);   // 导航栏放在标题下方
+  } else {
+    page.prepend(nav);  // 兜底方案
+  }
 
   bindNavEvents(nav);
   highlightCurrentPage(nav);
