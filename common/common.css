@@ -226,3 +226,31 @@ button.danger:hover{
 .dark .footer{
     color:#aaa;
 }
+
+/* =============================
+   导航栏样式（全站通用）
+   ============================= */
+.nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 0;
+  font-size: 18px;
+}
+
+.nav-left .nav-item {
+  margin-right: 16px;
+  cursor: pointer;
+}
+
+.nav-item.active {
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+.nav-right .icon {
+  margin-left: 16px;
+  cursor: pointer;
+  font-size: 20px;
+}
+
