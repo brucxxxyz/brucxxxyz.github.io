@@ -155,16 +155,67 @@ button.danger:hover{
     margin-top:6px;
 }
 
-/* ========== 导航栏 ========== */
-.nav{
-    margin-bottom:16px;
-    font-size:15px;
-    text-align:center;
+/* =============================
+   导航栏（最终统一版）
+   ============================= */
+.nav {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin: 10px 0 20px 0;
+  font-size: 17px;
 }
 
-.nav a{
-    text-decoration:none;
-    color:#007aff;
+.nav-line {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.nav-item {
+  cursor: pointer;
+  transition: all 0.2s;
+  color: #007aff;
+}
+
+.nav-item.active {
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+.dot {
+  color: #000;
+  font-weight: bold;
+}
+
+/* ========== 三条按钮（早餐页） ========== */
+.bar {
+  height: 52px;
+  border-radius: 14px;
+  margin: 14px 0;
+  cursor: pointer;
+  transition: opacity .2s;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 18px;
+  color: #fff;
+  font-weight: 500;
+}
+
+.bar.blue {
+  background: #007bff;
+}
+
+.bar.gray {
+  background: #e0e0e0;
+  color: #333;
+}
+
+.bar.red {
+  background: #dc3545;
 }
 
 /* ========== 页脚 ========== */
@@ -226,91 +277,3 @@ button.danger:hover{
 .dark .footer{
     color:#aaa;
 }
-
-/* =============================
-   导航栏样式（全站通用）
-   ============================= */
-.nav {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 14px 0;
-  font-size: 18px;
-}
-
-.nav-left .nav-item {
-  margin-right: 16px;
-  cursor: pointer;
-}
-
-.nav-item.active {
-  font-weight: bold;
-  text-decoration: underline;
-}
-
-.nav-right .icon {
-  margin-left: 16px;
-  cursor: pointer;
-  font-size: 20px;
-}
-
-.bar {
-  height: 52px;
-  border-radius: 14px;
-  margin: 14px 0;
-  cursor: pointer;
-  transition: opacity .2s;
-
-  display: flex;              /* ✅ 让内容居中 */
-  align-items: center;        /* ✅ 垂直居中 */
-  justify-content: center;    /* ✅ 水平居中 */
-
-  font-size: 18px;
-  color: #fff;
-  font-weight: 500;
-}
-
-.bar.blue {
-  background: #007bff;
-}
-
-.bar.gray {
-  background: #e0e0e0;
-  color: #333;
-}
-
-.bar.red {
-  background: #dc3545;
-}
-
-.nav {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 16px;
-  margin-bottom: 20px;
-}
-
-.nav-line {
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-}
-
-.nav-item {
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.nav-item.active {
-  font-weight: bold;
-  text-decoration: underline;
-}
-
-.dot {
-  color: #000;
-  font-weight: bold;
-}
-
-
-
