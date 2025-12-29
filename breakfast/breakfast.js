@@ -1,15 +1,9 @@
-// =============================
-// 工具函数
-// =============================
 const rand = arr => arr[Math.floor(Math.random() * arr.length)];
 
 function foodName(item) {
   return item.name[currentLang] || item.name["zh-CN"];
 }
 
-// =============================
-// 生成一份早餐组合
-// =============================
 function makeMeal() {
   const d = rand(BREAKFAST.drinks);
   const s = rand(BREAKFAST.staples);
@@ -26,9 +20,6 @@ function makeMeal() {
   };
 }
 
-// =============================
-// 生成早餐推荐
-// =============================
 function generate() {
   const name = nameInput.value.trim();
   const date = dateInput.value;
@@ -74,9 +65,6 @@ function generate() {
   }, 800);
 }
 
-// =============================
-// 选择某个早餐
-// =============================
 function choose(meal, name, date) {
   const history = JSON.parse(localStorage.getItem("breakfastHistory") || "[]");
   history.push({ name, date, meal });
@@ -100,9 +88,6 @@ function choose(meal, name, date) {
   `;
 }
 
-// =============================
-// 查看历史
-// =============================
 function showHistory() {
   const history = JSON.parse(localStorage.getItem("breakfastHistory") || "[]");
 
@@ -128,9 +113,6 @@ function showHistory() {
   });
 }
 
-// =============================
-// 清除历史
-// =============================
 function clearHistory() {
   if (confirm(t("btn_clear"))) {
     localStorage.removeItem("breakfastHistory");
@@ -138,9 +120,6 @@ function clearHistory() {
   }
 }
 
-// =============================
-// 绑定翻译
-// =============================
 function bindBreakfastTexts() {
   t_set("t_title_breakfast", "title_breakfast");
   t_set("t_subtitle_breakfast", "subtitle_breakfast");
@@ -153,14 +132,9 @@ function bindBreakfastTexts() {
   t_set("t_footer", "footer");
 }
 
-// =============================
-// 页面初始化
-// =============================
 function initBreakfastPage() {
-  // 默认日期 = 今天
   dateInput.value = new Date().toISOString().slice(0, 10);
 
-  // 三条横条绑定功能
   barBlue.onclick = generate;
   barGray.onclick = showHistory;
   barRed.onclick = clearHistory;
