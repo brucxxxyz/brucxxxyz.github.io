@@ -254,3 +254,32 @@ button.danger:hover{
   font-size: 20px;
 }
 
+.bar {
+  height: 52px;
+  border-radius: 14px;
+  margin: 14px 0;
+  cursor: pointer;
+  transition: opacity .2s;
+
+  display: flex;              /* ✅ 让内容居中 */
+  align-items: center;        /* ✅ 垂直居中 */
+  justify-content: center;    /* ✅ 水平居中 */
+
+  font-size: 18px;
+  color: #fff;
+  font-weight: 500;
+}
+
+.bar.blue {
+  background: #007bff;
+}
+
+.bar.gray {
+  background: #6c757d;
+}
+
+.bar.red {
+  background: #dc3545;
+}
+
+
