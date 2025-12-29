@@ -526,5 +526,138 @@ function makeMeal(){
 
   return {
     d, s, de,
-    total:{
-      kcal:d
+   total:{
+      kcal:d.k+s.k+de.k,
+      p:d.p+s.p+de.p,
+      c:d.c+s.c+de.c,
+      f:d.f+s.f+de.f
+    }
+  };
+}
+
+<script>
+/* ============================
+   继续 makeMeal() 后的逻辑
+   ============================ */
+
+/* ============================
+   生成早餐
+   ============================ */
+
+function generate(){
+  const name = document.getElementById("name").value.trim();
+  if(!name){
+    alert(LANG[currentLang].name_placeholder);
+    return;
+  }
+
+  document.getElementById("options").innerHTML = "⏳ ...";
+  document.getElementById("final").innerHTML = "";
+  document.getElementById("historyBox").innerHTML = "";
+
+  setTimeout(()=>{
+    const box = document.getElementById("options");
+    box.innerHTML = "";
+
+    for(let i=0;i<3;i++){
+      const m = makeMeal();
+      const t = LANG[currentLang];
+
+      const div = document.createElement("div");
+      div.className = "card";
+      div.innerHTML = `
+        <strong>${t.option} ${i+1}</strong>
+        <div class="item">🥤 ${translateFood(m.d.name)}</div>
+        <div class="item">🍞 ${translateFood(m.s.name)}</div>
+        <div class="item">🍮 ${translateFood(m.de.name)}</div>
+        <div class="nutrition">
+          🔥 ${m.total.kcal} kcal ·
+          🥚 ${m.total.p}g ·
+          🍞 ${m.total.c}g ·
+          🧈 ${m.total.f}g
+        </div>
+        <button onclick='choose(${JSON.stringify(m)}, "${name}")'>
+          ${t.choose}
+        </button>
+      `;
+      box.appendChild(div);
+    }
+  },600);
+}
+
+/* ============================
+   选择早餐
+   ============================ */
+
+function choose(m,name){
+  const h = JSON.parse(localStorage.getItem("breakfastHistory")||"[]");
+  h.push({date:new Date().toLocaleDateString(),name,meal:m});
+  localStorage.setItem("breakfastHistory",JSON.stringify(h));
+
+  const t = LANG[currentLang];
+
+  document.getElementById("options").innerHTML = "";
+  document.getElementById("final").innerHTML = `
+    <div class="card">
+      <strong>${t.today_breakfast}</strong>
+      <div class="item">🥤 ${translateFood(m.d.name)}</div>
+      <div class="item">🍞 ${translateFood(m.s.name)}</div>
+      <div class="item">🍮 ${translateFood(m.de.name)}</div>
+      <div class="nutrition">
+        🔥 ${m.total.kcal} kcal ·
+        🥚 ${m.total.p}g ·
+        🍞 ${m.total.c}g ·
+        🧈 ${m.total.f}g
+      </div>
+    </div>
+  `;
+}
+
+/* ============================
+   历史记录
+   ============================ */
+
+function renderHistory(){
+  const box = document.getElementById("historyBox");
+  const h = JSON.parse(localStorage.getItem("breakfastHistory")||"[]");
+  const t = LANG[currentLang];
+
+  box.innerHTML = "";
+
+  if(!h.length){
+    box.innerHTML = `<div class="card">${t.history_empty}</div>`;
+    return;
+  }
+
+  h.forEach(x=>{
+    box.innerHTML += `
+      <div class="card">
+        <strong>${x.date} · ${x.name}</strong>
+        <div class="item">🥤 ${translateFood(x.meal.d.name)}</div>
+        <div class="item">🍞 ${translateFood(x.meal.s.name)}</div>
+        <div class="item">🍮 ${translateFood(x.meal.de.name)}</div>
+        <div class="nutrition">🔥 ${x.meal.total.kcal} kcal</div>
+      </div>
+    `;
+  });
+}
+
+function showHistory(){
+  renderHistory();
+}
+
+function clearHistory(){
+  if(confirm("确定清除所有早餐历史？")){
+    localStorage.removeItem("breakfastHistory");
+    document.getElementById("historyBox").innerHTML = "";
+  }
+}
+
+/* ============================
+   初始化日期
+   ============================ */
+document.getElementById("date").value = new Date().toISOString().slice(0,10);
+</script>
+
+</body>
+</html>
