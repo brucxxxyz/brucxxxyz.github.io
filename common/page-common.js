@@ -100,13 +100,12 @@ function initPageCommon() {
 
   const nav = buildNav();
 
-  // 找到语言图标所在区域
-  const topRight = page.querySelector(".top-right");
-
-  if (topRight) {
-    topRight.after(nav);   // 导航栏放在语言图标下方
+  // 插入到语言图标下方
+  const topBar = page.querySelector(".top-bar");
+  if (topBar) {
+    topBar.after(nav);
   } else {
-    page.prepend(nav);     // 兜底方案
+    page.prepend(nav); // 兜底方案
   }
 
   bindNavEvents(nav);
