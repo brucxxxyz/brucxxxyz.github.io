@@ -158,6 +158,9 @@ button.danger:hover{
 /* =============================
    导航栏（最终统一版）
    ============================= */
+/* =============================
+   导航栏（最终样式）
+   ============================= */
 .nav {
   width: 100%;
   display: flex;
@@ -175,18 +178,19 @@ button.danger:hover{
 .nav-item {
   cursor: pointer;
   transition: all 0.2s;
-  color: #007aff;
+  color: #007aff;              /* ✅ 蓝色字体 */
 }
 
 .nav-item.active {
-  font-weight: bold;
-  text-decoration: underline;
+  font-weight: bold;           /* ✅ 加粗 */
+  text-decoration: none;       /* ❌ 不要下划线 */
 }
 
 .dot {
   color: #000;
   font-weight: bold;
 }
+
 
 /* ========== 三条按钮（早餐页） ========== */
 .bar {
