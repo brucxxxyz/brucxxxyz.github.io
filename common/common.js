@@ -2,6 +2,22 @@
    全站统一：语言切换 + 深色模式 + 多语言包
    ============================================================ */
 
+/* ============================
+   自动生成语言菜单（全站通用）
+   ============================ */
+
+function initLangMenu(){
+  const menu = document.getElementById("langMenu");
+  if(!menu) return;
+
+  menu.innerHTML = `
+    <div class="lang-title">🌐 Language</div>
+    <div class="lang-item" data-lang="zh-CN">🇨🇳 简体中文</div>
+    <div class="lang-item" data-lang="zh-HK">🇭🇰 粤语繁體</div>
+    <div class="lang-item" data-lang="en">🇺🇸 English</div>
+  `;
+}
+
 /* ========== 深色模式 ========== */
 let dark = localStorage.getItem("darkMode") === "true";
 
