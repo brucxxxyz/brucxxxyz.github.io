@@ -1,6 +1,3 @@
-// =============================
-// 主题切换（亮色 / 暗色）
-// =============================
 function initTheme() {
   const saved = localStorage.getItem("theme") || "light";
   document.documentElement.setAttribute("data-theme", saved);
@@ -13,9 +10,6 @@ function toggleTheme() {
   localStorage.setItem("theme", next);
 }
 
-// =============================
-// 导航栏 HTML
-// =============================
 function buildNav() {
   const nav = document.createElement("div");
   nav.className = "nav";
@@ -37,9 +31,6 @@ function buildNav() {
   return nav;
 }
 
-// =============================
-// 导航栏点击事件
-// =============================
 function bindNavEvents(nav) {
   nav.querySelectorAll(".nav-item").forEach(item => {
     item.onclick = () => {
@@ -48,20 +39,15 @@ function bindNavEvents(nav) {
     };
   });
 
-  // 语言切换按钮
   document.getElementById("btnLang").onclick = () => {
     const next = currentLang === "zh-CN" ? "zh-HK" :
                  currentLang === "zh-HK" ? "en" : "zh-CN";
     setLang(next);
   };
 
-  // 主题切换按钮
   document.getElementById("btnTheme").onclick = toggleTheme;
 }
 
-// =============================
-// 高亮当前页面
-// =============================
 function highlightCurrentPage(nav) {
   const path = location.pathname;
 
@@ -73,16 +59,12 @@ function highlightCurrentPage(nav) {
   });
 }
 
-// =============================
-// 初始化页面公共部分
-// =============================
 function initPageCommon() {
   initTheme();
 
   const page = document.querySelector(".page");
   if (!page) return;
 
-  // 插入导航栏（不会覆盖内容）
   const nav = buildNav();
   page.prepend(nav);
 
