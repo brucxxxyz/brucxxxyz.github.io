@@ -21,11 +21,14 @@ function buildNav() {
   nav.className = "nav";
 
   nav.innerHTML = `
-    <div class="nav-left">
-      <span class="nav-item" data-page="index.html">${t("nav_home")}</span>
-      <span class="nav-item" data-page="breakfast/index.html">${t("nav_breakfast")}</span>
-      <span class="nav-item" data-page="play/index.html">${t("nav_play")}</span>
-      <span class="nav-item" data-page="fitness/index.html">${t("nav_fitness")}</span>
+    <div class="nav-line">
+      <span class="nav-item" data-page="index.html">🏠 ${t("nav_home")}</span>
+      <span class="dot">·</span>
+      <span class="nav-item" data-page="breakfast/index.html">🍳 ${t("nav_breakfast")}</span>
+      <span class="dot">·</span>
+      <span class="nav-item" data-page="play/index.html">🗺️ ${t("nav_play")}</span>
+      <span class="dot">·</span>
+      <span class="nav-item" data-page="fitness/index.html">💪 ${t("nav_fitness")}</span>
     </div>
 
     <div class="nav-right">
