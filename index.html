@@ -5,7 +5,7 @@
 <title>🐲 BY · Daily Selectors</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<!-- iOS Web App 模式（保留，但不包含图标） -->
+<!-- iOS Web App 模式 -->
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 
@@ -50,29 +50,84 @@ a{
 
 <body>
 
-<h1>✨ Daily Selectors</h1>
-  
+<!-- 🌐 语言切换 -->
+<div style="text-align:right; margin-bottom:10px;">
+  <select id="langSwitcher" style="padding:6px; font-size:14px;">
+    <option value="zh-CN">🇨🇳 简体中文</option>
+    <option value="zh-HK">🇭🇰 繁體中文</option>
+    <option value="en">🇺🇸 English</option>
+  </select>
+</div>
+
+<h1 id="t_title">✨ Daily Selectors</h1>
+
 <div class="card">
-  <a href="/breakfast/">🍳 早餐选择器</a>
-</div>
-
-<div class= "card">
-  <a href="/play/">🗺 游玩选择器</a>
+  <a href="/breakfast/" id="t_breakfast">🍳 早餐选择器</a>
 </div>
 
 <div class="card">
-  <a href="/fitness/">💪 健身选择器</a>
+  <a href="/play/" id="t_play">🗺 游玩选择器</a>
 </div>
 
-<footer style="
-    margin-top:40px;
-    text-align:center;
-    font-size:14px;
-    color:#999;
-    padding-bottom:20px;
-">
+<div class="card">
+  <a href="/fitness/" id="t_fitness">💪 健身选择器</a>
+</div>
+
+<footer class="footer" id="t_footer">
 — Designed by BY —
 </footer>
+
+<!-- ===================== 多语言包 ===================== -->
+<script>
+const LANG = {
+  "zh-CN": {
+    title: "✨ Daily Selectors",
+    breakfast: "🍳 早餐选择器",
+    play: "🗺 游玩选择器",
+    fitness: "💪 健身选择器",
+    footer: "— Designed by BY —"
+  },
+
+  "zh-HK": {
+    title: "✨ Daily Selectors",
+    breakfast: "🍳 早餐選擇器",
+    play: "🗺 遊玩選擇器",
+    fitness: "💪 健身選擇器",
+    footer: "— Designed by BY —"
+  },
+
+  "en": {
+    title: "✨ Daily Selectors",
+    breakfast: "🍳 Breakfast Selector",
+    play: "🗺 Play Selector",
+    fitness: "💪 Fitness Selector",
+    footer: "— Designed by BY —"
+  }
+};
+</script>
+
+<!-- ===================== 语言切换逻辑 ===================== -->
+<script>
+let currentLang = localStorage.getItem("lang") || "zh-CN";
+document.getElementById("langSwitcher").value = currentLang;
+
+document.getElementById("langSwitcher").addEventListener("change", function () {
+  localStorage.setItem("lang", this.value);
+  location.reload();
+});
+
+function applyLang() {
+  const t = LANG[currentLang];
+
+  document.getElementById("t_title").innerText = t.title;
+  document.getElementById("t_breakfast").innerText = t.breakfast;
+  document.getElementById("t_play").innerText = t.play;
+  document.getElementById("t_fitness").innerText = t.fitness;
+  document.getElementById("t_footer").innerText = t.footer;
+}
+
+applyLang();
+</script>
 
 </body>
 </html>
