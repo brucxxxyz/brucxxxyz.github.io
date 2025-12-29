@@ -112,33 +112,29 @@ const categories = {
 
 function rand(arr){return arr[Math.floor(Math.random()*arr.length)];}
 
-/* 生成 3 组 × 每组 3 动作 */
+/* 生成 1 组 × 3 动作 */
 function makePlan(){
   const keys = Object.keys(categories);
-  const groups = [];
+  const group = [];
   let totalKcal = 0;
   let levels = [];
 
-  for(let g=0; g<3; g++){
-    const group = [];
-    for(let i=0; i<3; i++){
-      const cat = rand(keys);
-      const action = rand(categories[cat]);
-      group.push(action);
-      totalKcal += action.kcal;
-      levels.push(action.level);
-    }
-    groups.push(group);
+  for(let i=0; i<3; i++){
+    const cat = rand(keys);
+    const action = rand(categories[cat]);
+    group.push(action);
+    totalKcal += action.kcal;
+    levels.push(action.level);
   }
 
   const maxLevel = Math.max(...levels);
   const minLevel = Math.min(...levels);
   const diff = maxLevel - minLevel;
 
-  return { groups, totalKcal, diff };
+  return { group, totalKcal, diff };
 }
 
-/* 生成按钮 */
+/* 生成按钮（3 组选项 × 每组选 3 动作） */
 function generate(){
   const name=document.getElementById("name").value.trim();
   if(!name){
@@ -153,28 +149,28 @@ function generate(){
   setTimeout(()=>{
     const box=document.getElementById("options");
     box.innerHTML="";
+    const t = LANG[currentLang];
 
     for(let i=0;i<3;i++){
       const p=makePlan();
-      const t = LANG[currentLang];
 
       const div=document.createElement("div");
       div.className="card";
 
       div.innerHTML = `
         <strong>${t.option} ${i+1}</strong>
-        ${p.groups.map((group, idx)=>`
-          <div class="item"><b>第 ${idx+1} 组</b></div>
-          ${group.map(x=>`
-            <div class="item">
-              🏋️ ${translateExercise(x.name)}
-              <span class="badge">${x.level}</span>
-              <span class="badge">${x.kcal} kcal</span>
-            </div>
-          `).join("")}
+
+        ${p.group.map(x=>`
+          <div class="item">
+            🏋️ ${translateExercise(x.name)}
+            <span class="badge">${x.level}</span>
+            <span class="badge">${x.kcal} kcal</span>
+          </div>
         `).join("")}
+
         <div class="item">🔥 ${p.totalKcal} kcal</div>
         <div class="item">📊 强度差：${p.diff}</div>
+
         <button onclick='choose(${JSON.stringify(p)}, "${name}")'>
           ${t.choose}
         </button>
@@ -197,16 +193,15 @@ function choose(p,name){
   document.getElementById("final").innerHTML=`
     <div class="card">
       <strong>${t.today_fitness}</strong>
-      ${p.groups.map((group, idx)=>`
-        <div class="item"><b>第 ${idx+1} 组</b></div>
-        ${group.map(x=>`
-          <div class="item">
-            🏋️ ${translateExercise(x.name)}
-            <span class="badge">${x.level}</span>
-            <span class="badge">${x.kcal} kcal</span>
-          </div>
-        `).join("")}
+
+      ${p.group.map(x=>`
+        <div class="item">
+          🏋️ ${translateExercise(x.name)}
+          <span class="badge">${x.level}</span>
+          <span class="badge">${x.kcal} kcal</span>
+        </div>
       `).join("")}
+
       <div class="item">🔥 ${p.totalKcal} kcal</div>
       <div class="item">📊 强度差：${p.diff}</div>
     </div>
@@ -230,16 +225,15 @@ function showHistory(){
     box.innerHTML+=`
       <div class="card">
         <strong>${x.date} · ${x.name}</strong>
-        ${x.plan.groups.map((group, idx)=>`
-          <div class="item"><b>第 ${idx+1} 组</b></div>
-          ${group.map(p=>`
-            <div class="item">
-              🏋️ ${translateExercise(p.name)}
-              <span class="badge">${p.level}</span>
-              <span class="badge">${p.kcal} kcal</span>
-            </div>
-          `).join("")}
+
+        ${x.plan.group.map(p=>`
+          <div class="item">
+            🏋️ ${translateExercise(p.name)}
+            <span class="badge">${p.level}</span>
+            <span class="badge">${p.kcal} kcal</span>
+          </div>
         `).join("")}
+
         <div class="item">🔥 ${x.plan.totalKcal} kcal</div>
         <div class="item">📊 强度差：${x.plan.diff}</div>
       </div>
