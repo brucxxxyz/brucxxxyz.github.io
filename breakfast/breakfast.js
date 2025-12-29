@@ -129,12 +129,13 @@ function bindBreakfastTexts() {
 
   t_set("t_date_label", "date_label");
 
-  barBlue.textContent = t("btn_recommend");
+  barBlue.textContent = t("btn_generate_breakfast");
   barGray.textContent = t("btn_history");
   barRed.textContent  = t("btn_clear");
 
   t_set("t_footer", "footer");
 }
+
 
 function initBreakfastPage() {
   dateInput.value = new Date().toISOString().slice(0, 10);
