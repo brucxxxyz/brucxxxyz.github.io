@@ -22,6 +22,34 @@ h1{
   margin-bottom:24px;
 }
 
+<!-- 下拉式语言选择器 -->
+<div class="card" style="position: relative;">
+  <div id="lang-toggle" style="cursor: pointer; display: flex; align-items: center; justify-content: space-between; width: 100%;">
+    🌐 语言 Language
+    <span style="font-size: 14px; color: #999;">▼</span>
+  </div>
+
+  <div id="lang-menu" style="
+    display: none;
+    margin-top: 12px;
+    border-top: 1px solid #eee;
+    padding-top: 12px;
+  ">
+    <a href="?lang=zh-CN">🇨🇳 简体中文</a>
+    <br><br>
+    <a href="?lang=zh-HK">🇭🇰 繁體中文</a>
+    <br><br>
+    <a href="?lang=en">🇺🇸 English</a>
+  </div>
+</div>
+
+<script>
+  document.getElementById('lang-toggle').onclick = function () {
+    const menu = document.getElementById('lang-menu');
+    menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
+  };
+</script>
+
 .card{
   background:#fff;
   padding:18px 20px;
