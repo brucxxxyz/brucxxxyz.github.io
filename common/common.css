@@ -220,12 +220,12 @@ button.danger:hover{
 }
 
 /* ========== 页脚 ========== */
-.footer{
-    margin-top:40px;
-    text-align:center;
-    font-size:14px;
-    color:#999;
-    padding-bottom:20px;
+.footer {
+  margin-top:40px;
+  text-align:center;
+  font-size:14px;
+  color:#aaa;
+  padding-bottom:20px;
 }
 
 /* ========== 深色模式 ========== */
