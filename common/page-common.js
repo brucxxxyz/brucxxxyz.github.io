@@ -100,10 +100,11 @@ function initPageCommon() {
 
   const nav = buildNav();
 
-  // 插入到语言图标下方
+  // 找到语言 + 暗夜模式按钮所在的 top-bar
   const topBar = page.querySelector(".top-bar");
+
   if (topBar) {
-    topBar.after(nav);
+    topBar.insertAdjacentElement("afterend", nav);  
   } else {
     page.prepend(nav); // 兜底方案
   }
