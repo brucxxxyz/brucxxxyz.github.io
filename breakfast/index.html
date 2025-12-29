@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
   <title>Breakfast</title>
 
+  <!-- 全站统一样式 -->
   <link rel="stylesheet" href="/common/common.css">
 
   <style>
@@ -49,6 +50,22 @@
 
 <body>
 
+  <!-- 🌐 全站统一：语言选择 + 深色模式 -->
+  <div class="top-bar">
+    <div class="icon-btn" id="langBtn">🌐</div>
+    <div id="langMenu"></div>
+    <div class="icon-btn" id="themeBtn">🌙</div>
+  </div>
+
+  <!-- 🧭 全站统一导航栏 -->
+  <div class="nav">
+    <a href="/">🏠 首页</a> ·
+    <a href="/breakfast/">🍳 早餐</a> ·
+    <a href="/play/">🗺 游玩</a> ·
+    <a href="/fitness/">💪 健身</a>
+  </div>
+
+  <!-- 页面主体 -->
   <div class="page">
 
     <h1 id="t_title_breakfast"></h1>
@@ -70,25 +87,26 @@
 
   </div>
 
+  <!-- 全站统一语言包 + 公共逻辑 -->
   <script src="/common/lang.js"></script>
   <script src="/common/common.js"></script>
   <script src="/common/page-common.js"></script>
 
+  <!-- 早餐数据 + 早餐逻辑 -->
   <script src="/data/breakfast.js"></script>
   <script src="/breakfast/breakfast.js"></script>
 
-<!-- 初始化代码放在这里 -->
-<script>
-  initPageCommon();
+  <!-- 初始化 -->
+  <script>
+    initPageCommon();   // 初始化语言 + 深色模式 + 菜单
+    window.onload = () => {
+      bindBreakfastTexts();   // 绑定早餐页面文案
+      initBreakfastPage();    // 初始化早餐逻辑
+    };
+  </script>
 
-  window.onload = () => {
-    bindBreakfastTexts();
-    initBreakfastPage();
-  };
-
-</script>
-
-<footer class="footer" id="t_footer">— Designed by BY —</footer>
+  <!-- 页面底部落款（正中间） -->
+  <footer class="footer" id="t_footer">— Designed by BY —</footer>
 
 </body>
 </html>
