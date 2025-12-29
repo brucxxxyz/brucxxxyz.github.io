@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
   <title>Breakfast</title>
 
-  <!-- 全站统一样式 -->
   <link rel="stylesheet" href="/common/common.css">
 
   <style>
@@ -73,21 +72,18 @@
 
   </div>
 
-  <!-- 全站统一语言包 + 公共逻辑 -->
   <script src="/common/lang.js"></script>
   <script src="/common/common.js"></script>
   <script src="/common/page-common.js"></script>
 
-  <!-- 早餐数据 + 早餐逻辑 -->
   <script src="/data/breakfast.js"></script>
   <script src="/breakfast/breakfast.js"></script>
 
-  <!-- 初始化 -->
   <script>
-    initPageCommon();   // 注入 top-bar/nav/footer + 初始化语言/主题
+    initPageCommon();
     window.onload = () => {
-      bindBreakfastTexts();   // 绑定早餐页面文案
-      initBreakfastPage();    // 初始化早餐逻辑
+      bindBreakfastTexts();
+      initBreakfastPage();
     };
   </script>
 
