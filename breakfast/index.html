@@ -50,14 +50,8 @@
 
 <body>
 
-  <!-- 🌐 全站统一：语言选择 + 深色模式 -->
-  <div class="top-bar">
-    <div class="icon-btn" id="langBtn">🌐</div>
-    <div id="langMenu"></div>
-    <div class="icon-btn" id="themeBtn">🌙</div>
-  </div>
+  <!-- ❗ 不要写 top-bar / nav / footer，它们由 common.js 自动注入 -->
 
-  <!-- 页面主体 -->
   <div class="page">
 
     <h1 id="t_title_breakfast"></h1>
@@ -90,15 +84,12 @@
 
   <!-- 初始化 -->
   <script>
-    initPageCommon();   // 初始化语言 + 深色模式 + 菜单
+    initPageCommon();   // 注入 top-bar/nav/footer + 初始化语言/主题
     window.onload = () => {
       bindBreakfastTexts();   // 绑定早餐页面文案
       initBreakfastPage();    // 初始化早餐逻辑
     };
   </script>
-
-  <!-- 页面底部落款（正中间） -->
-  <footer class="footer" id="t_footer">— Designed by BY —</footer>
 
 </body>
 </html>
