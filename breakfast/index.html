@@ -95,11 +95,12 @@
   <script src="/breakfast/breakfast.js"></script>
 
   <!-- 初始化 -->
-  <script>
-    initPageCommon();     // 导航栏、语言切换、主题
-    bindBreakfastTexts(); // 绑定翻译
-    initBreakfastPage();  // 初始化早餐逻辑（你会在 breakfast.js 里写）
-  </script>
+initPageCommon();
+
+window.onload = () => {
+  bindBreakfastTexts();
+  initBreakfastPage();
+};
 
 </body>
 </html>
