@@ -275,12 +275,42 @@ button.danger:hover{
 }
 
 .bar.gray {
-  background: #f0f0f0;
+  background: #e0e0e0;
   color: #333;
 }
 
 .bar.red {
   background: #dc3545;
 }
+
+.nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 16px;
+  margin-bottom: 20px;
+}
+
+.nav-line {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.nav-item {
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.nav-item.active {
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+.dot {
+  color: #000;
+  font-weight: bold;
+}
+
 
 
