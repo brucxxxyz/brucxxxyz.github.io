@@ -83,8 +83,11 @@ function generateFitness(){
   }, 500);
 }
 
-/* ========= 选择方案 ========= */
+/* ========= 选择方案 ========= */ 
 function chooseFitness(plan, name){
+  // ★ 隐藏推荐选项（与早餐页、游玩页一致）
+  options.innerHTML = "";
+
   const history = JSON.parse(localStorage.getItem("fitnessHistory") || "[]");
   history.push({
     date: new Date().toLocaleDateString(),
@@ -110,6 +113,7 @@ function chooseFitness(plan, name){
     </div>
   `;
 }
+
 
 /* ========= 查看历史 ========= */
 function showFitnessHistory(){
