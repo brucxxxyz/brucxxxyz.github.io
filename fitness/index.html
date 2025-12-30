@@ -77,25 +77,17 @@
   </div>
 
   <!-- 全站语言包 + 公共逻辑 -->
-  <script src="../common/lang.js"></script>
-  <script src="../common/common.js"></script>
+<script src="../common/lang.js"></script>
+<script src="../common/common.js"></script>
+<script src="Fitness.js"></script>
 
-  <!-- 健身数据（必须在 fitness.js 之前加载） -->
-  <script src="../data/fitness.js"></script>
-
-  <!-- 健身逻辑 -->
-  <script src="fitness.js"></script>
-
-  <script>
-    console.log("Fitness page loaded");
-
-    initPageCommon();   // 注入导航栏、主题、语言
-
-    window.onload = () => {
-      bindFitnessTexts();  // 绑定文案
-      initFitnessPage();   // 初始化按钮事件
-    };
-  </script>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  initPageCommon();
+  binFitnessTexts();
+  initFitnessPage();
+});
+</script>
 
 </body>
 </html>
