@@ -95,6 +95,9 @@ function generatePlay(){
 
 /* ========= 选择方案 ========= */
 function choosePlay(combo, name){
+  // ★ 隐藏推荐选项（与早餐页一致）
+  options.innerHTML = "";
+
   const history = JSON.parse(localStorage.getItem("playHistory") || "[]");
   history.push({
     date: new Date().toLocaleDateString(),
