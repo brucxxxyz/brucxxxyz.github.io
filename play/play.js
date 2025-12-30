@@ -1,82 +1,54 @@
-/* ========= 数据 ========= */
-const categories = {
-  "咖啡店":[
-    {name:"Dear Deer Coffee",lat:-36.8890,lon:174.9270},
-    {name:"Handpicked Coffee",lat:-36.8736,lon:174.7764},
-    {name:"Mezze Bar Coffee",lat:-36.8702,lon:174.7781},
-    {name:"Espresso Workshop",lat:-36.8680,lon:174.7770},
-    {name:"Remedy Coffee",lat:-36.8477,lon:174.7650},
-    {name:"Little Q Coffee",lat:-36.8725,lon:174.7752}
-  ],
-  "古董店":[
-    {name:"The Collectors",lat:-36.8790,lon:174.8120},
-    {name:"Vitrine",lat:-36.8575,lon:174.7778},
-    {name:"The Poi Room",lat:-36.8618,lon:174.7754},
-    {name:"Artisan Antiques",lat:-36.8688,lon:174.7722},
-    {name:"Old Charm Studio",lat:-36.8710,lon:174.7810},
-    {name:"Heritage Room",lat:-36.8655,lon:174.7790}
-  ],
-  "海滩":[
-    {name:"Mission Bay",lat:-36.8489,lon:174.8306},
-    {name:"St Heliers Beach",lat:-36.8485,lon:174.8560},
-    {name:"Kohimarama Beach",lat:-36.8482,lon:174.8418},
-    {name:"Ladies Bay",lat:-36.8550,lon:174.8285},
-    {name:"Okahu Bay",lat:-36.8438,lon:174.7972},
-    {name:"Judges Bay",lat:-36.8471,lon:174.8014}
-  ],
-  "家具店":[
-    {name:"Nood",lat:-36.8712,lon:174.7760},
-    {name:"Mocka Sylvia Park",lat:-36.9175,lon:174.8478},
-    {name:"Danske Mobler",lat:-36.8793,lon:174.8126},
-    {name:"Target Furniture",lat:-36.9051,lon:174.8532},
-    {name:"Freedom Furniture",lat:-36.8844,lon:174.8460},
-    {name:"Urban Sales",lat:-36.8720,lon:174.7769}
-  ],
-  "中式甜品":[
-    {name:"Aroma Dessert Studio",lat:-36.8899,lon:174.7577},
-    {name:"EVERSWEET",lat:-36.8869,lon:174.9271},
-    {name:"Spoonful 一口甜",lat:-36.8980,lon:174.9500},
-    {name:"Soul Sweet 甜匠",lat:-36.8904,lon:174.8679},
-    {name:"Little Sweet Corner",lat:-36.8820,lon:174.8450},
-    {name:"Oriental Sugar House",lat:-36.8785,lon:174.8300}
-  ],
-  "中式奶茶/果茶":[
-    {name:"Tea Talk Sylvia Park",lat:-36.9104,lon:174.8619},
-    {name:"Tea Talk Newmarket",lat:-36.8715,lon:174.7773},
-    {name:"NOMI Botany",lat:-36.8859,lon:174.9456},
-    {name:"ChaBliss 吃茶去",lat:-36.8650,lon:174.7769},
-    {name:"Teadee Bubble Tea",lat:-36.8732,lon:174.7762},
-    {name:"Hokey Pokey Tea House",lat:-36.8929,lon:174.7994}
-  ]
-};
-
 /* ========= 工具 ========= */
-function rad(d){return d*Math.PI/180;}
+const rand = arr => arr[Math.floor(Math.random() * arr.length)];
+
+function rad(d){ return d * Math.PI / 180; }
+
 function haversine(a,b,c,d){
-  const R=6371;
-  const x=rad(c-a), y=rad(d-b);
-  const z=Math.sin(x/2)**2 +
-    Math.cos(rad(a))*Math.cos(rad(c))*Math.sin(y/2)**2;
-  return 2*R*Math.atan2(Math.sqrt(z),Math.sqrt(1-z));
+  const R = 6371;
+  const x = rad(c - a), y = rad(d - b);
+  const z = Math.sin(x/2)**2 +
+            Math.cos(rad(a)) * Math.cos(rad(c)) * Math.sin(y/2)**2;
+  return 2 * R * Math.atan2(Math.sqrt(z), Math.sqrt(1 - z));
 }
-function totalDistance(ps){
-  let d=0;
-  for(let i=0;i<ps.length;i++){
-    for(let j=i+1;j<ps.length;j++){
-      d+=haversine(ps[i].lat,ps[i].lon,ps[j].lat,ps[j].lon);
+
+function totalDistance(points){
+  let d = 0;
+  for(let i=0;i<points.length;i++){
+    for(let j=i+1;j<points.length;j++){
+      d += haversine(points[i].lat, points[i].lon, points[j].lat, points[j].lon);
     }
   }
   return d.toFixed(2);
 }
-function rand(arr){return arr[Math.floor(Math.random()*arr.length)];}
 
-function makeCombo(){
-  const cats = Object.keys(categories).sort(()=>0.5-Math.random()).slice(0,3);
-  const points = cats.map(c => ({...rand(categories[c]), category:c}));
-  return {points, distance: totalDistance(points)};
+/* ========= 多语言名称 ========= */
+function placeName(item){
+  return item.name[currentLang] || item.name["zh-CN"];
 }
 
-/* ========= 生成 ========= */
+function categoryName(key){
+  return PLAY_CATEGORIES[key].label[currentLang] || PLAY_CATEGORIES[key].label["zh-CN"];
+}
+
+/* ========= 生成一组游玩路线 ========= */
+function makeCombo(){
+  const keys = Object.keys(PLAY_CATEGORIES).sort(() => 0.5 - Math.random()).slice(0, 3);
+
+  const points = keys.map(k => {
+    const place = rand(PLAY_CATEGORIES[k].items);
+    return {
+      ...place,
+      categoryKey: k
+    };
+  });
+
+  return {
+    points,
+    distance: totalDistance(points)
+  };
+}
+
+/* ========= 生成推荐 ========= */
 function generatePlay(){
   const name = nameInput.value.trim();
   if(!name){
@@ -88,20 +60,27 @@ function generatePlay(){
   final.innerHTML = "";
   historyBox.innerHTML = "";
 
-  setTimeout(()=>{
+  setTimeout(() => {
     options.innerHTML = "";
 
     for(let i=0;i<3;i++){
-      const c = makeCombo();
+      const combo = makeCombo();
 
       const div = document.createElement("div");
       div.className = "card";
 
       div.innerHTML = `
         <h3>${t("option")} ${i+1}</h3>
-        ${c.points.map(p=>`<div class="item">📍 ${p.category}：${p.name}</div>`).join("")}
-        <div class="item">📏 ${c.distance} km</div>
-        <button onclick='choosePlay(${JSON.stringify(c)}, "${name}")'>
+
+        ${combo.points.map(p => `
+          <div class="item">
+            📍 ${categoryName(p.categoryKey)}：${placeName(p)}
+          </div>
+        `).join("")}
+
+        <div class="item">📏 ${combo.distance} km</div>
+
+        <button onclick='choosePlay(${JSON.stringify(combo)}, "${name}")'>
           ${t("choose")}
         </button>
       `;
@@ -111,46 +90,62 @@ function generatePlay(){
   }, 800);
 }
 
-/* ========= 选择 ========= */
+/* ========= 选择方案 ========= */
 function choosePlay(combo, name){
-  const h = JSON.parse(localStorage.getItem("playHistory") || "[]");
-  h.push({date: new Date().toLocaleDateString(), name, combo});
-  localStorage.setItem("playHistory", JSON.stringify(h));
+  const history = JSON.parse(localStorage.getItem("playHistory") || "[]");
+  history.push({
+    date: new Date().toLocaleDateString(),
+    name,
+    combo
+  });
+  localStorage.setItem("playHistory", JSON.stringify(history));
 
-  options.innerHTML = "";
   final.innerHTML = `
     <div class="card">
       <h2>${t("today_play")}</h2>
-      ${combo.points.map(p=>`<div class="item">📍 ${p.category}：${p.name}</div>`).join("")}
+
+      ${combo.points.map(p => `
+        <div class="item">
+          📍 ${categoryName(p.categoryKey)}：${placeName(p)}
+        </div>
+      `).join("")}
+
       <div class="item">📏 ${combo.distance} km</div>
     </div>
   `;
 }
 
-/* ========= 历史 ========= */
+/* ========= 查看历史 ========= */
 function showPlayHistory(){
-  const h = JSON.parse(localStorage.getItem("playHistory") || "[]");
-  historyBox.innerHTML = "";
+  const history = JSON.parse(localStorage.getItem("playHistory") || "[]");
+
   options.innerHTML = "";
   final.innerHTML = "";
+  historyBox.innerHTML = "";
 
-  if(!h.length){
+  if(!history.length){
     historyBox.innerHTML = `<div class="card">${t("history_empty")}</div>`;
     return;
   }
 
-  h.forEach(x=>{
+  history.forEach(h => {
     historyBox.innerHTML += `
       <div class="card">
-        <strong>${x.date} · ${x.name}</strong>
-        ${x.combo.points.map(p=>`<div class="item">📍 ${p.category}：${p.name}</div>`).join("")}
-        <div class="item">📏 ${x.combo.distance} km</div>
+        <strong>${h.date} · ${h.name}</strong>
+
+        ${h.combo.points.map(p => `
+          <div class="item">
+            📍 ${categoryName(p.categoryKey)}：${placeName(p)}
+          </div>
+        `).join("")}
+
+        <div class="item">📏 ${h.combo.distance} km</div>
       </div>
     `;
   });
 }
 
-/* ========= 清除 ========= */
+/* ========= 清除历史 ========= */
 function clearPlayHistory(){
   if(confirm(t("btn_clear"))){
     localStorage.removeItem("playHistory");
