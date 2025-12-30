@@ -1,68 +1,32 @@
-/* ========= 数据 ========= */
-const FITNESS = {
-  warmup: [
-    {name:"站姿提膝收腹", level:1, kcal:60},
-    {name:"原地摆臂快走", level:1, kcal:70},
-    {name:"肩部绕环", level:1, kcal:40},
-    {name:"颈部活动", level:1, kcal:20},
-    {name:"开合步热身", level:1, kcal:55},
-    {name:"手臂画圈", level:1, kcal:45}
-  ],
-  legs: [
-    {name:"徒手深蹲", level:2, kcal:90},
-    {name:"站姿侧抬腿", level:1, kcal:50},
-    {name:"弓步蹲", level:2, kcal:85},
-    {name:"靠墙静蹲", level:2, kcal:80},
-    {name:"后踢腿", level:1, kcal:60},
-    {name:"提踵训练", level:1, kcal:45}
-  ],
-  core: [
-    {name:"站姿转体", level:2, kcal:80},
-    {name:"站姿收腹", level:1, kcal:50},
-    {name:"侧腹收缩", level:2, kcal:70},
-    {name:"站姿卷腹", level:2, kcal:75},
-    {name:"核心稳定站姿", level:1, kcal:40},
-    {name:"站姿侧弯", level:1, kcal:45}
-  ],
-  upper: [
-    {name:"站姿拳击（技术+呼吸）", level:2, kcal:100},
-    {name:"俯身划船（徒手）", level:2, kcal:85},
-    {name:"墙壁俯卧撑", level:2, kcal:90},
-    {name:"手臂后伸", level:1, kcal:50},
-    {name:"肩推（徒手）", level:2, kcal:80},
-    {name:"手臂交叉拉伸", level:1, kcal:30}
-  ],
-  cardio: [
-    {name:"原地高抬腿（慢速）", level:3, kcal:130},
-    {name:"原地踏步", level:1, kcal:60},
-    {name:"开合跳（低冲击）", level:2, kcal:110},
-    {name:"左右小跳", level:2, kcal:95},
-    {name:"轻量跑步原地", level:2, kcal:100},
-    {name:"快速摆臂走", level:2, kcal:90}
-  ],
-  boxing: [
-    {name:"波比简化版（不跳）", level:3, kcal:120},
-    {name:"轻量拳击组合（直拳+摆拳）", level:2, kcal:110},
-    {name:"直拳练习", level:2, kcal:90},
-    {name:"摆拳练习", level:2, kcal:95},
-    {name:"闪躲步伐", level:2, kcal:85},
-    {name:"拳击步伐移动", level:2, kcal:100}
-  ]
-};
-
+/* ========= 工具 ========= */
 const rand = arr => arr[Math.floor(Math.random() * arr.length)];
+
+/* ========= 多语言名称 ========= */
+function exerciseName(item){
+  return item.name[currentLang] || item.name["zh-CN"];
+}
+
+function categoryName(key){
+  return FITNESS[key].label[currentLang] || FITNESS[key].label["zh-CN"];
+}
 
 /* ========= 生成一组训练 ========= */
 function makePlan(){
   const keys = Object.keys(FITNESS);
+
   const group = [];
   let totalKcal = 0;
   let levels = [];
 
   for(let i=0; i<3; i++){
     const cat = rand(keys);
-    const action = rand(FITNESS[cat]);
-    group.push(action);
+    const action = rand(FITNESS[cat].items);
+
+    group.push({
+      ...action,
+      categoryKey: cat
+    });
+
     totalKcal += action.kcal;
     levels.push(action.level);
   }
@@ -74,7 +38,7 @@ function makePlan(){
   };
 }
 
-/* ========= 生成按钮 ========= */
+/* ========= 生成推荐 ========= */
 function generateFitness(){
   const name = nameInput.value.trim();
   if(!name){
@@ -86,27 +50,30 @@ function generateFitness(){
   final.innerHTML = "";
   historyBox.innerHTML = "";
 
-  setTimeout(()=>{
+  setTimeout(() => {
     options.innerHTML = "";
 
     for(let i=0;i<3;i++){
-      const p = makePlan();
+      const plan = makePlan();
 
       const div = document.createElement("div");
       div.className = "card";
 
       div.innerHTML = `
         <h3>${t("option")} ${i+1}</h3>
-        ${p.group.map(x=>`
+
+        ${plan.group.map(p => `
           <div class="item">
-            🏋️ ${x.name}
-            <span class="badge">${x.level}</span>
-            <span class="badge">${x.kcal} kcal</span>
+            🏋️ ${exerciseName(p)}
+            <span class="badge">${p.level}</span>
+            <span class="badge">${p.kcal} kcal</span>
           </div>
         `).join("")}
-        <div class="item">🔥 ${p.totalKcal} kcal</div>
-        <div class="item">📊 强度差：${p.diff}</div>
-        <button onclick='chooseFitness(${JSON.stringify(p)}, "${name}")'>
+
+        <div class="item">🔥 ${plan.totalKcal} kcal</div>
+        <div class="item">📊 ${t("intensity_diff")}：${plan.diff}</div>
+
+        <button onclick='chooseFitness(${JSON.stringify(plan)}, "${name}")'>
           ${t("choose")}
         </button>
       `;
@@ -116,60 +83,68 @@ function generateFitness(){
   }, 600);
 }
 
-/* ========= 选择 ========= */
+/* ========= 选择方案 ========= */
 function chooseFitness(plan, name){
-  const h = JSON.parse(localStorage.getItem("fitnessHistory") || "[]");
-  h.push({date: new Date().toLocaleDateString(), name, plan});
-  localStorage.setItem("fitnessHistory", JSON.stringify(h));
+  const history = JSON.parse(localStorage.getItem("fitnessHistory") || "[]");
+  history.push({
+    date: new Date().toLocaleDateString(),
+    name,
+    plan
+  });
+  localStorage.setItem("fitnessHistory", JSON.stringify(history));
 
   final.innerHTML = `
     <div class="card">
       <h2>${t("today_fitness")}</h2>
-      ${plan.group.map(x=>`
+
+      ${plan.group.map(p => `
         <div class="item">
-          🏋️ ${x.name}
-          <span class="badge">${x.level}</span>
-          <span class="badge">${x.kcal} kcal</span>
+          🏋️ ${exerciseName(p)}
+          <span class="badge">${p.level}</span>
+          <span class="badge">${p.kcal} kcal</span>
         </div>
       `).join("")}
+
       <div class="item">🔥 ${plan.totalKcal} kcal</div>
-      <div class="item">📊 强度差：${plan.diff}</div>
+      <div class="item">📊 ${t("intensity_diff")}：${plan.diff}</div>
     </div>
   `;
 }
 
-/* ========= 历史 ========= */
+/* ========= 查看历史 ========= */
 function showFitnessHistory(){
-  const h = JSON.parse(localStorage.getItem("fitnessHistory") || "[]");
+  const history = JSON.parse(localStorage.getItem("fitnessHistory") || "[]");
 
   options.innerHTML = "";
   final.innerHTML = "";
   historyBox.innerHTML = "";
 
-  if(!h.length){
+  if(!history.length){
     historyBox.innerHTML = `<div class="card">${t("history_empty")}</div>`;
     return;
   }
 
-  h.forEach(x=>{
+  history.forEach(h => {
     historyBox.innerHTML += `
       <div class="card">
-        <strong>${x.date} · ${x.name}</strong>
-        ${x.plan.group.map(p=>`
+        <strong>${h.date} · ${h.name}</strong>
+
+        ${h.plan.group.map(p => `
           <div class="item">
-            🏋️ ${p.name}
+            🏋️ ${exerciseName(p)}
             <span class="badge">${p.level}</span>
             <span class="badge">${p.kcal} kcal</span>
           </div>
         `).join("")}
-        <div class="item">🔥 ${x.plan.totalKcal} kcal</div>
-        <div class="item">📊 强度差：${x.plan.diff}</div>
+
+        <div class="item">🔥 ${h.plan.totalKcal} kcal</div>
+        <div class="item">📊 ${t("intensity_diff")}：${h.plan.diff}</div>
       </div>
     `;
   });
 }
 
-/* ========= 清除 ========= */
+/* ========= 清除历史 ========= */
 function clearFitnessHistory(){
   if(confirm(t("btn_clear"))){
     localStorage.removeItem("fitnessHistory");
