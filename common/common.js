@@ -3,10 +3,10 @@
    ============================================================ */
 function initPageCommon() {
   injectLayout();        // 注入统一布局
-  fixNavPaths();         // ★ 修复导航路径（关键）
-  applySavedTheme();     // 页面加载时应用主题
+  fixNavPaths();         // 修复导航路径
+  applySavedTheme();     // 页面加载时应用主题（兼容主页）
   initLangMenu();        // 语言菜单逻辑
-  initThemeToggle();     // 深色模式切换
+  initThemeToggle();     // 深色模式切换（同步主页）
   applyNavTranslation(); // 导航栏翻译
 }
 
@@ -42,10 +42,9 @@ function injectLayout() {
 }
 
 /* ============================================================
-   ★ 修复导航路径（关键）
+   修复导航路径
    ============================================================ */
 function fixNavPaths() {
-  // 自动根据当前页面位置生成正确的相对路径
   const base = window.location.pathname.includes("/breakfast/")
     || window.location.pathname.includes("/play/")
     || window.location.pathname.includes("/fitness/")
@@ -93,30 +92,49 @@ function initLangMenu() {
 }
 
 /* ============================================================
-   ★ 页面加载时应用主题（关键）
+   ★ 页面加载时应用主题（兼容主页 + 子页）
    ============================================================ */
 function applySavedTheme() {
-  const saved = localStorage.getItem("theme") || "light";
+  // 主页使用 darkMode（true/false）
+  const savedDarkMode = localStorage.getItem("darkMode");
 
-  if (saved === "dark") {
-    document.documentElement.classList.add("dark");
+  // 子页使用 theme（light/dark）
+  const savedTheme = localStorage.getItem("theme");
+
+  let isDark = false;
+
+  if (savedDarkMode !== null) {
+    isDark = savedDarkMode === "true";
+  } else {
+    isDark = savedTheme === "dark";
+  }
+
+  if (isDark) {
+    document.documentElement.classList.add("dark"); // 子页
   } else {
     document.documentElement.classList.remove("dark");
   }
 }
 
 /* ============================================================
-   深色模式切换
+   ★ 深色模式切换（同步主页 + 子页）
    ============================================================ */
 function initThemeToggle() {
   const themeBtn = document.getElementById("themeBtn");
-  const saved = localStorage.getItem("theme") || "light";
 
-  themeBtn.textContent = saved === "dark" ? "☀️" : "🌙";
+  const savedDarkMode = localStorage.getItem("darkMode") === "true";
+  const savedTheme = localStorage.getItem("theme") === "dark";
+  const isDark = savedDarkMode || savedTheme;
+
+  themeBtn.textContent = isDark ? "☀️" : "🌙";
 
   themeBtn.onclick = () => {
-    const isDark = document.documentElement.classList.toggle("dark");
-    localStorage.setItem("theme", isDark ? "dark" : "light");
-    themeBtn.textContent = isDark ? "☀️" : "🌙";
+    const nowDark = document.documentElement.classList.toggle("dark");
+
+    // 同步写入两套体系（主页 + 子页）
+    localStorage.setItem("darkMode", nowDark ? "true" : "false");
+    localStorage.setItem("theme", nowDark ? "dark" : "light");
+
+    themeBtn.textContent = nowDark ? "☀️" : "🌙";
   };
 }
