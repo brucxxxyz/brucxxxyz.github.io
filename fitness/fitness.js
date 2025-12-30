@@ -13,6 +13,7 @@ function categoryName(key){
 /* ========= 生成一组训练计划 ========= */
 function makePlan(){
   const keys = Object.keys(FITNESS);
+
   const group = [];
   let totalKcal = 0;
   let levels = [];
@@ -63,7 +64,9 @@ function generateFitness(){
 
         ${plan.group.map(p => `
           <div class="item">
-            🐮 ${exerciseName(p)} ${p.level} ${p.kcal} kcal
+            🏋️ ${exerciseName(p)}
+            <span class="badge">${p.level}</span>
+            <span class="badge">${p.kcal} kcal</span>
           </div>
         `).join("")}
 
@@ -77,7 +80,7 @@ function generateFitness(){
 
       options.appendChild(div);
     }
-  }, 600);
+  }, 500);
 }
 
 /* ========= 选择方案 ========= */
@@ -96,7 +99,9 @@ function chooseFitness(plan, name){
 
       ${plan.group.map(p => `
         <div class="item">
-          🐮 ${exerciseName(p)} ${p.level} ${p.kcal} kcal
+          🏋️ ${exerciseName(p)}
+          <span class="badge">${p.level}</span>
+          <span class="badge">${p.kcal} kcal</span>
         </div>
       `).join("")}
 
@@ -126,7 +131,9 @@ function showFitnessHistory(){
 
         ${h.plan.group.map(p => `
           <div class="item">
-            🐮 ${exerciseName(p)} ${p.level} ${p.kcal} kcal
+            🏋️ ${exerciseName(p)}
+            <span class="badge">${p.level}</span>
+            <span class="badge">${p.kcal} kcal</span>
           </div>
         `).join("")}
 
