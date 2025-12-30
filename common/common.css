@@ -248,83 +248,88 @@ button.danger:hover {
    深色模式（完整修复版）
    ============================================================ */
 
-.dark body {
+html.dark {
     background: #1c1c1e;
     color: #f2f2f7;
 }
 
-.dark h1,
-.dark .subtitle,
-.dark label {
+html.dark body {
+    background: #1c1c1e;
     color: #f2f2f7;
 }
 
-.dark input,
-.dark button,
-.dark .card {
+html.dark h1,
+html.dark .subtitle,
+html.dark label {
+    color: #f2f2f7;
+}
+
+html.dark input,
+html.dark button,
+html.dark .card {
     background: #2c2c2e;
     color: #f2f2f7;
     border-color: #3a3a3c;
 }
 
-.dark button.secondary {
+html.dark button.secondary {
     background: #3a3a3c;
     color: #fff;
 }
 
-.dark button.secondary:hover {
+html.dark button.secondary:hover {
     background: #4a4a4c;
 }
 
-.dark button.danger {
+html.dark button.danger {
     background: #ff453a;
 }
 
-.dark #langMenu {
+html.dark #langMenu {
     background: #2c2c2e;
     box-shadow: 0 6px 16px rgba(0,0,0,0.5);
 }
 
-.dark .lang-title {
+html.dark .lang-title {
     color: #ccc;
     border-bottom: 1px solid #444;
 }
 
-.dark .lang-item:hover {
+html.dark .lang-item:hover {
     background: #3a3a3c;
 }
 
-.dark .icon-btn {
+html.dark .icon-btn {
     background: #2c2c2e;
     color: #fff;
     box-shadow: 0 4px 10px rgba(0,0,0,0.5);
 }
 
-.dark .footer {
+html.dark .footer {
     color: #aaa;
 }
 
-.dark .nav-item {
+html.dark .nav-item {
     color: #0a84ff;
 }
 
-.dark .dot {
+html.dark .dot {
     color: #f2f2f7;
 }
 
-.dark .bar.gray {
+html.dark .bar.gray {
     background: #3a3a3c;
     color: #f2f2f7;
 }
 
-.dark .bar.blue {
+html.dark .bar.blue {
     background: #0a84ff;
 }
 
-.dark .bar.red {
+html.dark .bar.red {
     background: #ff453a;
 }
 
-.dark .card:hover {
+html.dark .card:hover {
     box-shadow: 0 10px 24px rgba(0,0,0,0.5);
 }
