@@ -1,6 +1,38 @@
-html.dark, body.dark {
-    --theme-dark: 1;
+/* 兼容主页的 body.dark 体系 */
+body.dark {
+    background: #1c1c1e !important;
+    color: #f2f2f7 !important;
 }
+
+body.dark .card,
+html.dark .card {
+    background: #2c2c2e !important;
+    color: #f2f2f7 !important;
+}
+
+body.dark .icon-btn,
+html.dark .icon-btn {
+    background: #2c2c2e !important;
+    color: #fff !important;
+}
+
+body.dark .nav a,
+html.dark .nav a {
+    color: #0a84ff !important;
+}
+
+body.dark input,
+html.dark input {
+    background: #2c2c2e !important;
+    color: #f2f2f7 !important;
+    border-color: #3a3a3c !important;
+}
+
+body.dark .footer,
+html.dark .footer {
+    color: #aaa !important;
+}
+
 
 /* ============================================================
    基础样式（亮色模式默认）
