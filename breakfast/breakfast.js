@@ -137,7 +137,7 @@ function bindBreakfastTexts() {
 }
 
 function initBreakfastPage(){
-  document.getElementById("barBlue").onclick = generateBreakfast;
-  document.getElementById("barGray").onclick = showBreakfastHistory;
-  document.getElementById("barRed").onclick = clearBreakfastHistory;
+  document.getElementById("barBlue").onclick = generate;
+  document.getElementById("barGray").onclick = showHistory;
+  document.getElementById("barRed").onclick = clearHistory;
 }
