@@ -32,11 +32,12 @@ function categoryName(key){
 
 /* ========= 生成一组游玩路线 ========= */
 function makeCombo(){
-  const keys = Object.keys(PLAY_CATEGORIES)
-    .sort(() => 0.5 - Math.random())
-    .slice(0, 3);
+  const keys = Object.keys(PLAY_CATEGORIES);
 
-  const points = keys.map(k => {
+  // 随机抽 3 个分类
+  const chosen = keys.sort(() => 0.5 - Math.random()).slice(0, 3);
+
+  const points = chosen.map(k => {
     const place = rand(PLAY_CATEGORIES[k].items);
     return {
       ...place,
@@ -89,7 +90,7 @@ function generatePlay(){
 
       options.appendChild(div);
     }
-  }, 800);
+  }, 600);
 }
 
 /* ========= 选择方案 ========= */
