@@ -1,16 +1,18 @@
 // =============================
-// 主题
+// 主题（使用 class="dark" 机制）
 // =============================
 function initTheme() {
   const saved = localStorage.getItem("theme") || "light";
-  document.documentElement.setAttribute("data-theme", saved);
+  if (saved === "dark") {
+    document.documentElement.classList.add("dark");
+  } else {
+    document.documentElement.classList.remove("dark");
+  }
 }
 
 function toggleTheme() {
-  const current = document.documentElement.getAttribute("data-theme");
-  const next = current === "light" ? "dark" : "light";
-  document.documentElement.setAttribute("data-theme", next);
-  localStorage.setItem("theme", next);
+  const isDark = document.documentElement.classList.toggle("dark");
+  localStorage.setItem("theme", isDark ? "dark" : "light");
 }
 
 // =============================
@@ -46,7 +48,6 @@ function bindNavEvents(nav) {
     };
   });
 
-  // 语言按钮（在 top-bar 里）
   const btnLang = document.getElementById("btnLang");
   if (btnLang) {
     btnLang.onclick = () => {
@@ -56,7 +57,6 @@ function bindNavEvents(nav) {
     };
   }
 
-  // 主题按钮（在 top-bar 里）
   const btnTheme = document.getElementById("btnTheme");
   if (btnTheme) {
     btnTheme.onclick = toggleTheme;
@@ -71,12 +71,9 @@ function highlightCurrentPage(nav) {
 
   nav.querySelectorAll(".nav-item").forEach(item => {
     const page = "/" + item.getAttribute("data-page");
-
-    // 首页永远不高亮
     if (page === "/index.html") return;
 
-    // 其他页面匹配目录前缀
-    const folder = page.replace("/index.html", ""); 
+    const folder = page.replace("/index.html", "");
     if (path.startsWith(folder)) {
       item.classList.add("active");
     }
@@ -93,20 +90,15 @@ function initPageCommon() {
   if (!page) return;
 
   const path = location.pathname;
-
-  // 首页不显示导航栏
-  if (path === "/" || path === "/index.html") {
-    return;
-  }
+  if (path === "/" || path === "/index.html") return;
 
   const nav = buildNav();
 
-  // 插入到 top-bar 下方
   const topBar = page.querySelector(".top-bar");
   if (topBar) {
     topBar.insertAdjacentElement("afterend", nav);
   } else {
-    page.prepend(nav); // 兜底
+    page.prepend(nav);
   }
 
   bindNavEvents(nav);
