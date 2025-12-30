@@ -4,35 +4,27 @@ body.dark {
     color: #f2f2f7 !important;
 }
 
-body.dark .card,
-html.dark .card {
+body.dark .card {
     background: #2c2c2e !important;
     color: #f2f2f7 !important;
 }
 
-body.dark .icon-btn,
-html.dark .icon-btn {
+body.dark .icon-btn {
     background: #2c2c2e !important;
     color: #fff !important;
 }
 
-body.dark .nav a,
-html.dark .nav a {
+body.dark a {
     color: #0a84ff !important;
 }
 
-body.dark input,
-html.dark input {
+body.dark #langMenu {
     background: #2c2c2e !important;
-    color: #f2f2f7 !important;
-    border-color: #3a3a3c !important;
 }
 
-body.dark .footer,
-html.dark .footer {
+body.dark .footer {
     color: #aaa !important;
 }
-
 
 /* ============================================================
    基础样式（亮色模式默认）
