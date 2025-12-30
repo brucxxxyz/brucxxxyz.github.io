@@ -34,7 +34,10 @@ const LANG = {
     title_fitness: "💪 今日健身计划",
     subtitle_fitness: "简单 · 高效 · 不拖延",
     btn_generate_fitness: "💪 生成训练",
-    today_fitness: "✅ 今日训练"
+    today_fitness: "✅ 今日训练",
+
+    // ===== 健身专用 =====
+    intensity_diff: "强度差"
   },
 
   "zh-HK": {
@@ -69,7 +72,10 @@ const LANG = {
     title_fitness: "💪 今日健身計劃",
     subtitle_fitness: "簡單 · 高效 · 唔拖延",
     btn_generate_fitness: "💪 生成訓練",
-    today_fitness: "✅ 今日訓練"
+    today_fitness: "✅ 今日訓練",
+
+    // ===== 健身专用 =====
+    intensity_diff: "強度差"
   },
 
   "en": {
@@ -104,7 +110,10 @@ const LANG = {
     title_fitness: "💪 Today's Workout",
     subtitle_fitness: "Simple · Efficient · No Excuses",
     btn_generate_fitness: "💪 Generate Workout",
-    today_fitness: "✅ Today's Workout"
+    today_fitness: "✅ Today's Workout",
+
+    // ===== Fitness Only =====
+    intensity_diff: "Intensity Difference"
   }
 };
 
