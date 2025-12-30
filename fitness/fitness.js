@@ -1,4 +1,4 @@
-/* ========= 工具 ========= */
+/* ========= 工具函数 ========= */
 const rand = arr => arr[Math.floor(Math.random() * arr.length)];
 
 /* ========= 多语言名称 ========= */
@@ -10,10 +10,9 @@ function categoryName(key){
   return FITNESS[key].label[currentLang] || FITNESS[key].label["zh-CN"];
 }
 
-/* ========= 生成一组训练 ========= */
+/* ========= 生成一组训练计划 ========= */
 function makePlan(){
   const keys = Object.keys(FITNESS);
-
   const group = [];
   let totalKcal = 0;
   let levels = [];
@@ -64,14 +63,12 @@ function generateFitness(){
 
         ${plan.group.map(p => `
           <div class="item">
-            🏋️ ${exerciseName(p)}
-            <span class="badge">${p.level}</span>
-            <span class="badge">${p.kcal} kcal</span>
+            🐮 ${exerciseName(p)} ${p.level} ${p.kcal} kcal
           </div>
         `).join("")}
 
         <div class="item">🔥 ${plan.totalKcal} kcal</div>
-        <div class="item">📊 ${t("intensity_diff")}：${plan.diff}</div>
+        <div class="item">📊 ${t("intensity_diff")}: ${plan.diff}</div>
 
         <button onclick='chooseFitness(${JSON.stringify(plan)}, "${name}")'>
           ${t("choose")}
@@ -99,14 +96,12 @@ function chooseFitness(plan, name){
 
       ${plan.group.map(p => `
         <div class="item">
-          🏋️ ${exerciseName(p)}
-          <span class="badge">${p.level}</span>
-          <span class="badge">${p.kcal} kcal</span>
+          🐮 ${exerciseName(p)} ${p.level} ${p.kcal} kcal
         </div>
       `).join("")}
 
       <div class="item">🔥 ${plan.totalKcal} kcal</div>
-      <div class="item">📊 ${t("intensity_diff")}：${plan.diff}</div>
+      <div class="item">📊 ${t("intensity_diff")}: ${plan.diff}</div>
     </div>
   `;
 }
@@ -117,7 +112,7 @@ function showFitnessHistory(){
 
   options.innerHTML = "";
   final.innerHTML = "";
- historyBox.innerHTML = "";
+  historyBox.innerHTML = "";
 
   if(!history.length){
     historyBox.innerHTML = `<div class="card">${t("history_empty")}</div>`;
@@ -131,14 +126,12 @@ function showFitnessHistory(){
 
         ${h.plan.group.map(p => `
           <div class="item">
-            🏋️ ${exerciseName(p)}
-            <span class="badge">${p.level}</span>
-            <span class="badge">${p.kcal} kcal</span>
+            🐮 ${exerciseName(p)} ${p.level} ${p.kcal} kcal
           </div>
         `).join("")}
 
         <div class="item">🔥 ${h.plan.totalKcal} kcal</div>
-        <div class="item">📊 ${t("intensity_diff")}：${h.plan.diff}</div>
+        <div class="item">📊 ${t("intensity_diff")}: ${h.plan.diff}</div>
       </div>
     `;
   });
