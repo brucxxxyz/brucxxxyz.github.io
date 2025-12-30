@@ -3,12 +3,17 @@
 // =============================
 const LANG = {
   "zh-CN": {
-    // ===== 公共 =====
     nav_home: "首页",
     nav_breakfast: "早餐",
     nav_play: "游玩",
     nav_fitness: "健身",
     footer: "— Designed by BY —",
+
+    // ===== 主页 Home =====
+    home_title: "✨ Daily Selectors",
+    home_breakfast: "🍳 早餐选择器",
+    home_play: "🗺 游玩选择器",
+    home_fitness: "💪 健身选择器",
 
     // ===== 早餐 Breakfast =====
     title_breakfast: "🍳 今日早餐推荐",
@@ -36,17 +41,21 @@ const LANG = {
     btn_generate_fitness: "💪 生成训练",
     today_fitness: "✅ 今日训练",
 
-    // ===== 健身专用 =====
     intensity_diff: "强度差"
   },
 
   "zh-HK": {
-    // ===== 公共 =====
     nav_home: "主頁",
     nav_breakfast: "早餐",
     nav_play: "玩樂",
     nav_fitness: "健身",
     footer: "— Designed by BY —",
+
+    // ===== 主頁 Home =====
+    home_title: "✨ Daily Selectors",
+    home_breakfast: "🍳 早餐選擇器",
+    home_play: "🗺 遊玩選擇器",
+    home_fitness: "💪 健身選擇器",
 
     // ===== 早餐 Breakfast =====
     title_breakfast: "🍳 今日早餐推薦",
@@ -74,17 +83,21 @@ const LANG = {
     btn_generate_fitness: "💪 生成訓練",
     today_fitness: "✅ 今日訓練",
 
-    // ===== 健身专用 =====
     intensity_diff: "強度差"
   },
 
   "en": {
-    // ===== Common =====
     nav_home: "Home",
     nav_breakfast: "Breakfast",
     nav_play: "Play",
     nav_fitness: "Fitness",
     footer: "— Designed by BY —",
+
+    // ===== Home =====
+    home_title: "✨ Daily Selectors",
+    home_breakfast: "🍳 Breakfast Selector",
+    home_play: "🗺 Play Selector",
+    home_fitness: "💪 Fitness Selector",
 
     // ===== Breakfast =====
     title_breakfast: "🍳 Today's Breakfast",
@@ -112,7 +125,6 @@ const LANG = {
     btn_generate_fitness: "💪 Generate Workout",
     today_fitness: "✅ Today's Workout",
 
-    // ===== Fitness Only =====
     intensity_diff: "Intensity Difference"
   }
 };
