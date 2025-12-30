@@ -1,17 +1,17 @@
 /* ============================================================
-   子页面通用框架（导航栏、顶部按钮、footer、语言切换）
+   子页面通用框架（导航栏、顶部按钮、footer、语言切换、主题）
    ============================================================ */
 
 function initPageCommon() {
   injectLayout();        // 注入统一布局
+  applySavedTheme();     // ★ 页面加载时应用主题（关键）
   initLangMenu();        // 语言菜单逻辑
-  initThemeToggle();     // 深色模式
+  initThemeToggle();     // 深色模式切换
   applyNavTranslation(); // 导航栏翻译
 }
 
 /* 注入公共布局 */
 function injectLayout() {
-  // 顶部按钮 + 导航栏
   document.body.insertAdjacentHTML("afterbegin", `
     <!-- 顶部按钮 -->
     <div class="top-bar">
@@ -36,7 +36,6 @@ function injectLayout() {
     </div>
   `);
 
-  // 底部落款
   document.body.insertAdjacentHTML("beforeend", `
     <footer class="footer" id="t_footer"></footer>
   `);
@@ -67,20 +66,31 @@ function initLangMenu() {
     item.onclick = () => {
       const lang = item.dataset.lang;
       localStorage.setItem("lang", lang);
-      location.reload(); // 刷新页面以应用翻译
+      location.reload();
     };
   });
+}
+
+/* ============================================================
+   ★ 页面加载时应用主题（关键）
+   ============================================================ */
+function applySavedTheme() {
+  const saved = localStorage.getItem("theme") || "light";
+
+  if (saved === "dark") {
+    document.documentElement.classList.add("dark");
+  } else {
+    document.documentElement.classList.remove("dark");
+  }
 }
 
 /* 深色模式切换 */
 function initThemeToggle() {
   const themeBtn = document.getElementById("themeBtn");
-  const saved = localStorage.getItem("theme");
+  const saved = localStorage.getItem("theme") || "light";
 
-  if (saved === "dark") {
-    document.documentElement.classList.add("dark");
-    themeBtn.textContent = "☀️";
-  }
+  // 初始化按钮图标
+  themeBtn.textContent = saved === "dark" ? "☀️" : "🌙";
 
   themeBtn.onclick = () => {
     const isDark = document.documentElement.classList.toggle("dark");
