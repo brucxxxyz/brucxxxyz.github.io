@@ -179,6 +179,6 @@ function initPlayPage(){
   dateInput.value = new Date().toISOString().slice(0,10);
 
   barBlue.onclick = generatePlay;
-  barGray.onclick = showPlayHistory;
+  document.getElementById("barGray").onclick = showPlayHistory;
   barRed.onclick = clearPlayHistory;
 }
