@@ -82,21 +82,16 @@
   <script src="breakfast.js"></script>
 
   <!-- 初始化 -->
-<!-- 初始化 -->
-<script>
-  document.addEventListener("DOMContentLoaded", () => {
-    console.log("Breakfast page DOM ready");
+  <script>
+    console.log("Breakfast page loaded");
 
-    // 1️⃣ 注入公共结构 + 主题 + 语言
-    initPageCommon();
+    initPageCommon();   // 注入 top-bar/nav/footer + 初始化语言/主题
 
-    // 2️⃣ 早餐页面自己的文案
-    bindBreakfastTexts();
-
-    // 3️⃣ 早餐页面逻辑
-    initBreakfastPage();
-  });
-</script>
+    window.onload = () => {
+      bindBreakfastTexts();   // 绑定早餐页面文案
+      initBreakfastPage();    // 初始化早餐逻辑
+    };
+  </script>
 
 </body>
 </html>
