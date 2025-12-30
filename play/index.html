@@ -85,16 +85,13 @@
   <!-- 游玩逻辑 -->
   <script src="play.js"></script>
 
-  <script>
-    console.log("Play page loaded");
-
-    initPageCommon();   // 注入 top-bar/nav/footer + 初始化语言/主题
-
-    window.onload = () => {
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  initPageCommon();
       bindPlayTexts();  // 绑定文案
       initPlayPage();   // 初始化逻辑
-    };
-  </script>
+});
+</script>
 
 </body>
 </html>
