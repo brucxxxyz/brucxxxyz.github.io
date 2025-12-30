@@ -76,18 +76,25 @@
 
   </div>
 
-  <!-- 全站语言包 + 公共逻辑 -->
-<script src="../common/lang.js"></script>
-<script src="../common/common.js"></script>
-<script src="Fitness.js"></script>
+  <!-- 全站统一语言包 + 公共逻辑（路径必须用 ../common/） -->
+  <script src="../common/lang.js"></script>
+  <script src="../common/common.js"></script>
 
-<script>
-document.addEventListener("DOMContentLoaded", () => {
-  initPageCommon();
-  binFitnessTexts();
-  initFitnessPage();
-});
-</script>
+  <!-- 早餐数据 + 早餐逻辑 -->
+  <script src="../data/fitness.js"></script>
+  <script src="fitness.js"></script>
+
+  <!-- 初始化 -->
+  <script>
+    console.log("Fitness page loaded");
+
+    initPageCommon();   // 注入 top-bar/nav/footer + 初始化语言/主题
+
+    window.onload = () => {
+      bindFitnessTexts();   // 绑定早餐页面文案
+      initFitnessPage();    // 初始化早餐逻辑
+    };
+  </script>
 
 </body>
 </html>
