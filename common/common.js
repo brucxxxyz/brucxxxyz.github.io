@@ -1,19 +1,20 @@
-   /*===========================================================
-   子页面通用框架（导航栏、顶部按钮、footer、语言切换、主题）
+/* ============================================================
+   公共初始化
    ============================================================ */
-
 function initPageCommon() {
   injectLayout();        // 注入统一布局
-  applySavedTheme();     // ★ 页面加载时应用主题（关键）
+  fixNavPaths();         // ★ 修复导航路径（关键）
+  applySavedTheme();     // 页面加载时应用主题
   initLangMenu();        // 语言菜单逻辑
   initThemeToggle();     // 深色模式切换
   applyNavTranslation(); // 导航栏翻译
 }
 
-/* 注入公共布局 */
+/* ============================================================
+   注入公共布局
+   ============================================================ */
 function injectLayout() {
   document.body.insertAdjacentHTML("afterbegin", `
-    <!-- 顶部按钮 -->
     <div class="top-bar">
       <div class="icon-btn" id="langBtn">🌐</div>
 
@@ -27,12 +28,11 @@ function injectLayout() {
       <div class="icon-btn" id="themeBtn">🌙</div>
     </div>
 
-    <!-- 导航栏 -->
     <div class="nav">
-      <a id="nav_home" href="/"></a> ·
-      <a id="nav_breakfast" href="/breakfast/"></a> ·
-      <a id="nav_play" href="/play/"></a> ·
-      <a id="nav_fitness" href="/fitness/"></a>
+      <a id="nav_home"></a> ·
+      <a id="nav_breakfast"></a> ·
+      <a id="nav_play"></a> ·
+      <a id="nav_fitness"></a>
     </div>
   `);
 
@@ -41,7 +41,26 @@ function injectLayout() {
   `);
 }
 
-/* 导航栏翻译 */
+/* ============================================================
+   ★ 修复导航路径（关键）
+   ============================================================ */
+function fixNavPaths() {
+  // 自动根据当前页面位置生成正确的相对路径
+  const base = window.location.pathname.includes("/breakfast/")
+    || window.location.pathname.includes("/play/")
+    || window.location.pathname.includes("/fitness/")
+    ? ".."
+    : ".";
+
+  document.getElementById("nav_home").href      = `${base}/index.html`;
+  document.getElementById("nav_breakfast").href = `${base}/breakfast/index.html`;
+  document.getElementById("nav_play").href      = `${base}/play/index.html`;
+  document.getElementById("nav_fitness").href   = `${base}/fitness/index.html`;
+}
+
+/* ============================================================
+   导航栏翻译
+   ============================================================ */
 function applyNavTranslation() {
   const t = LANG[currentLang];
 
@@ -53,7 +72,9 @@ function applyNavTranslation() {
   document.getElementById("t_footer").textContent = t.footer;
 }
 
-/* 语言菜单逻辑 */
+/* ============================================================
+   语言菜单逻辑
+   ============================================================ */
 function initLangMenu() {
   const langBtn = document.getElementById("langBtn");
   const langMenu = document.getElementById("langMenu");
@@ -84,12 +105,13 @@ function applySavedTheme() {
   }
 }
 
-/* 深色模式切换 */
+/* ============================================================
+   深色模式切换
+   ============================================================ */
 function initThemeToggle() {
   const themeBtn = document.getElementById("themeBtn");
   const saved = localStorage.getItem("theme") || "light";
 
-  // 初始化按钮图标
   themeBtn.textContent = saved === "dark" ? "☀️" : "🌙";
 
   themeBtn.onclick = () => {
