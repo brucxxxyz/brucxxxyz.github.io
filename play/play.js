@@ -1,4 +1,4 @@
-/* ========= 工具 ========= */
+/* ========= 工具函数 ========= */
 const rand = arr => arr[Math.floor(Math.random() * arr.length)];
 
 function rad(d){ return d * Math.PI / 180; }
@@ -32,7 +32,9 @@ function categoryName(key){
 
 /* ========= 生成一组游玩路线 ========= */
 function makeCombo(){
-  const keys = Object.keys(PLAY_CATEGORIES).sort(() => 0.5 - Math.random()).slice(0, 3);
+  const keys = Object.keys(PLAY_CATEGORIES)
+    .sort(() => 0.5 - Math.random())
+    .slice(0, 3);
 
   const points = keys.map(k => {
     const place = rand(PLAY_CATEGORIES[k].items);
