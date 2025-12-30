@@ -117,7 +117,7 @@ function showFitnessHistory(){
 
   options.innerHTML = "";
   final.innerHTML = "";
-  historyBox.innerHTML = "";
+ historyBox.innerHTML = "";
 
   if(!history.length){
     historyBox.innerHTML = `<div class="card">${t("history_empty")}</div>`;
