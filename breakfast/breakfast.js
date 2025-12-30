@@ -141,6 +141,6 @@ function initBreakfastPage() {
   dateInput.value = new Date().toISOString().slice(0, 10);
 
   barBlue.onclick = generate;
-  barGray.onclick = showHistory;
+  document.getElementById("barGray").onclick = showBreakfastHistory;
   barRed.onclick = clearHistory;
 }
