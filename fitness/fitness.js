@@ -175,7 +175,8 @@ function bindFitnessTexts(){
 function initFitnessPage(){
   dateInput.value = new Date().toISOString().slice(0,10);
 
-  barBlue.onclick = generateFitness;
-  barGray.onclick = showFitnessHistory;
-  barRed.onclick = clearFitnessHistory;
+document.getElementById("barBlue").onclick = generateFitness;
+document.getElementById("barGray").onclick = showFitnessHistory;
+document.getElementById("barRed").onclick = clearFitnessHistory;
+
 }
