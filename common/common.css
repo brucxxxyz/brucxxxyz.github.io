@@ -373,3 +373,10 @@ html.dark .card:hover {
     box-shadow: none !important;
 }
 
+/* 最终结果卡片样式（与推荐卡片区分） */
+#final .card {
+  border: 2px solid #007aff;
+  box-shadow: 0 4px 12px rgba(0,122,255,0.2);
+}
+
+
