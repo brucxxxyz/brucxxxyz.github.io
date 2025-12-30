@@ -136,11 +136,8 @@ function bindBreakfastTexts() {
   t_set("t_footer", "footer");
 }
 
-
-function initBreakfastPage() {
-  dateInput.value = new Date().toISOString().slice(0, 10);
-
-  barBlue.onclick = generate;
+function initBreakfastPage(){
+  document.getElementById("barBlue").onclick = generateBreakfast;
   document.getElementById("barGray").onclick = showBreakfastHistory;
-  barRed.onclick = clearHistory;
+  document.getElementById("barRed").onclick = clearBreakfastHistory;
 }
