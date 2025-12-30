@@ -361,3 +361,15 @@ html.dark .bar.red {
 html.dark .card:hover {
     box-shadow: 0 10px 24px rgba(0,0,0,0.5);
 }
+
+/* 去除健身页数字的灰色背景（覆盖系统默认样式） */
+.badge {
+    background: none !important;
+    border: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    color: inherit !important;
+    font-weight: normal !important;
+    box-shadow: none !important;
+}
+
