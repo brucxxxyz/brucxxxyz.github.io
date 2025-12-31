@@ -100,7 +100,7 @@ function choosePlay(combo, name){
 
   const history = JSON.parse(localStorage.getItem("playHistory") || "[]");
   history.push({
-    date: new Date().toLocaleDateString(),
+    date: dateInput.value,
     name,
     combo
   });
