@@ -90,7 +90,7 @@ function chooseFitness(plan, name){
 
   const history = JSON.parse(localStorage.getItem("fitnessHistory") || "[]");
   history.push({
-    date: new Date().toLocaleDateString(),
+    date: dateInput.value,
     name,
     plan
   });
