@@ -379,4 +379,30 @@ html.dark .card:hover {
   box-shadow: 0 4px 12px rgba(0,122,255,0.2);
 }
 
+/* 修复 iOS 日期按钮高度，使其与普通输入框一致 */
+#dateInput {
+    height: 44px;                 /* 与普通 input/button 完全一致 */
+    line-height: 44px;            /* 修复文字垂直位置 */
+    padding: 0 12px;              /* 与 input/button 一致 */
+    box-sizing: border-box;
+    appearance: none;
+    -webkit-appearance: none;
+}
+
+/* 修复 iOS 内部日期文字偏移问题 */
+#dateInput::-webkit-datetime-edit {
+    padding: 0;
+    margin: 0;
+    line-height: 44px;
+}
+
+#dateInput::-webkit-datetime-edit-fields-wrapper,
+#dateInput::-webkit-datetime-edit-text,
+#dateInput::-webkit-datetime-edit-month-field,
+#dateInput::-webkit-datetime-edit-day-field,
+#dateInput::-webkit-datetime-edit-year-field {
+    padding: 0;
+    margin: 0;
+}
+
 
